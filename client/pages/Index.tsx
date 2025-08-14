@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { WalletButton } from '@/components/WalletButton';
 import { RegistrationForm } from '@/components/RegistrationForm';
+import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { CheckCircle2, Twitter, Send, Wallet, Users, Lock, Zap, Globe, Shield } from 'lucide-react';
 import { Registration, RegistrationResponse, VerificationRequest } from '@shared/registration';
 
@@ -158,22 +159,8 @@ export default function Index() {
         <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-cyber-green rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
       </div>
 
-      {/* Matrix Rain Effect */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        {Array.from({ length: 50 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-cyber-green text-xs font-mono"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animation: 'matrix-rain 3s linear infinite'
-            }}
-          >
-            {Math.random().toString(36).substr(2, 1)}
-          </div>
-        ))}
-      </div>
+      {/* Animated Background with Cybergrid and Falling Objects */}
+      <AnimatedBackground />
 
       {/* Header */}
       <header className="relative z-10 border-b border-cyber-neon/20 bg-cyber-dark/50 backdrop-blur-sm">
@@ -206,7 +193,7 @@ export default function Index() {
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-cyber-pink via-cyber-blue to-cyber-green bg-clip-text text-transparent">
+            <h1 className="text-6xl md:text-8xl title-3d mb-6 bg-gradient-to-r from-cyber-pink via-cyber-blue to-cyber-green bg-clip-text text-transparent">
               $VERM AIRDROP
             </h1>
             <p className="text-xl md:text-2xl text-cyber-light/80 mb-8">
