@@ -173,27 +173,35 @@ export default function Index() {
       {/* Animated Background with Cybergrid and Falling Objects */}
       <AnimatedBackground />
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-cyber-neon/20 bg-cyber-dark/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
+      {/* Sticky Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-cyber-neon/20 bg-cyber-dark/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            {/* Logo */}
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F29ccaf1d7d264cd2bd339333fe296f0c%2F4ecd21b2dfb64ce481313888fb98d440?format=webp&width=80"
                 alt="NimRev Logo"
-                className="w-10 h-10 object-contain"
+                className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
               />
-              <h1 className="text-2xl font-bold neon-text text-cyber-neon title-3d">$VERM</h1>
+              <h1 className="text-lg sm:text-2xl font-bold neon-text text-cyber-neon title-3d">$VERM</h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <Badge variant="secondary" className="bg-cyber-dark border-cyber-neon text-cyber-light">
-                <Globe className="w-4 h-4 mr-1" />
-                Solana Network
+
+            {/* Network & Wallet */}
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Badge variant="secondary" className="bg-cyber-dark border-cyber-neon text-cyber-light text-xs sm:text-sm px-2 sm:px-3">
+                <Globe className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Solana Network</span>
+                <span className="sm:hidden">Solana</span>
               </Badge>
+
+              <WalletButton onConnect={() => {}} />
+
               {connected && (
-                <Badge variant="default" className="bg-cyber-green/20 border-cyber-green text-cyber-green">
-                  <Wallet className="w-4 h-4 mr-1" />
-                  Connected
+                <Badge variant="default" className="bg-cyber-green/20 border-cyber-green text-cyber-green text-xs">
+                  <Wallet className="w-3 h-3 mr-1" />
+                  <span className="hidden sm:inline">Connected</span>
+                  <span className="sm:hidden">✓</span>
                 </Badge>
               )}
             </div>
@@ -202,7 +210,7 @@ export default function Index() {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 container mx-auto px-6 py-12">
+      <main className="relative z-10 container mx-auto px-6 pt-24 pb-12">
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
