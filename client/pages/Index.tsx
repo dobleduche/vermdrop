@@ -221,19 +221,6 @@ export default function Index() {
               Join the revolution. Claim your share of the future.
             </p>
 
-            {/* Airdrop Allocation Information */}
-            <div className="mb-8 p-6 rounded-lg border border-cyber-neon/30 bg-cyber-dark/60 backdrop-blur-sm max-w-2xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-                <div className="space-y-2">
-                  <div className="text-cyber-pink font-bold text-lg">Allocation</div>
-                  <div className="text-cyber-light/80">20% of total supply</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-cyber-green font-bold text-lg">Vesting Terms</div>
-                  <div className="text-cyber-light/80">12 month linear vesting</div>
-                </div>
-              </div>
-            </div>
 
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center space-x-2">
