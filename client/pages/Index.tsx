@@ -198,24 +198,6 @@ export default function Index() {
               <h1 className="text-lg sm:text-2xl font-bold neon-text text-cyber-neon title-3d">$VERM</h1>
             </div>
 
-            {/* Network & Wallet */}
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <Badge variant="secondary" className="bg-cyber-dark border-cyber-neon text-cyber-light text-xs sm:text-sm px-2 sm:px-3">
-                <Globe className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                <span className="hidden sm:inline">Solana Network</span>
-                <span className="sm:hidden">Solana</span>
-              </Badge>
-
-              <WalletButton onConnect={() => {}} />
-
-              {connected && (
-                <Badge variant="default" className="bg-cyber-green/20 border-cyber-green text-cyber-green text-xs">
-                  <Wallet className="w-3 h-3 mr-1" />
-                  <span className="hidden sm:inline">Connected</span>
-                  <span className="sm:hidden">✓</span>
-                </Badge>
-              )}
-            </div>
           </div>
         </div>
       </header>
