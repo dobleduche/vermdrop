@@ -190,7 +190,7 @@ export default function Index() {
                 <Globe className="w-4 h-4 mr-1" />
                 Solana Network
               </Badge>
-              {walletConnected && (
+              {connected && (
                 <Badge variant="default" className="bg-cyber-green/20 border-cyber-green text-cyber-green">
                   <Wallet className="w-4 h-4 mr-1" />
                   Connected
@@ -251,6 +251,14 @@ export default function Index() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Registration Form */}
+          <div className="mb-8">
+            <RegistrationForm
+              onRegistrationComplete={handleRegistrationComplete}
+              existingRegistration={registration || undefined}
+            />
+          </div>
 
           {/* Claim Process */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
