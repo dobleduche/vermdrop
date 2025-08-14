@@ -6,42 +6,45 @@ import {
   registerUser,
   getRegistration,
   updateVerification,
-  getRegistrationStats
+  getRegistrationStats,
 } from "./routes/registration";
 import {
   registrationLimiter,
   verificationLimiter,
-  generalLimiter
+  generalLimiter,
 } from "./middleware/rateLimiter";
 import {
   errorHandler,
   notFoundHandler,
-  asyncHandler
+  asyncHandler,
 } from "./middleware/errorHandler";
 
 export function createServer() {
   const app = express();
 
   // Trust proxy for rate limiting
-  app.set('trust proxy', 1);
+  app.set("trust proxy", 1);
 
   // Middleware
-  app.use(cors({
-    origin: process.env.NODE_ENV === 'production'
-      ? ['https://nimrev.xyz', 'https://www.nimrev.xyz']
-      : true,
-    credentials: true
-  }));
+  app.use(
+    cors({
+      origin:
+        process.env.NODE_ENV === "production"
+          ? ["https://nimrev.xyz", "https://www.nimrev.xyz"]
+          : true,
+      credentials: true,
+    }),
+  );
 
-  app.use(express.json({ limit: '10mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+  app.use(express.json({ limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
   // Security headers
   app.use((req, res, next) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     next();
   });
 
@@ -51,31 +54,35 @@ export function createServer() {
     res.json({
       message: ping,
       timestamp: new Date().toISOString(),
-      status: 'healthy'
+      status: "healthy",
     });
   });
 
   app.get("/demo", generalLimiter.middleware(), handleDemo);
 
   // Registration endpoints with rate limiting
-  app.post("/registration",
+  app.post(
+    "/registration",
     registrationLimiter.middleware(),
-    asyncHandler(registerUser)
+    asyncHandler(registerUser),
   );
 
-  app.get("/registration/:wallet_address",
+  app.get(
+    "/registration/:wallet_address",
     generalLimiter.middleware(),
-    asyncHandler(getRegistration)
+    asyncHandler(getRegistration),
   );
 
-  app.put("/registration/verify",
+  app.put(
+    "/registration/verify",
     verificationLimiter.middleware(),
-    asyncHandler(updateVerification)
+    asyncHandler(updateVerification),
   );
 
-  app.get("/registration-stats",
+  app.get(
+    "/registration-stats",
     generalLimiter.middleware(),
-    asyncHandler(getRegistrationStats)
+    asyncHandler(getRegistrationStats),
   );
 
   // Error handlers (must be last)
