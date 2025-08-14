@@ -11,8 +11,11 @@ const RegistrationSchema = z.object({
 
 const VerificationSchema = z.object({
   wallet_address: z.string().min(32, "Invalid wallet address"),
-  twitter_verified: z.boolean().optional(),
-  telegram_verified: z.boolean().optional(),
+  twitter_followed: z.boolean().optional(),
+  telegram_joined: z.boolean().optional(),
+  tweet_verified: z.boolean().optional(),
+  tweet_url: z.string().url().optional(),
+  friends_invited: z.number().min(0).max(10).optional(),
 });
 
 // Types
@@ -27,6 +30,10 @@ export interface Registration {
   verm_balance: number;
   bonus_eligible: boolean;
   social_verified: boolean;
+  twitter_followed: boolean;
+  telegram_joined: boolean;
+  tweet_verified: boolean;
+  friends_invited: number;
 }
 
 // Mock database - In production, use PostgreSQL
@@ -61,6 +68,10 @@ export const registerUser: RequestHandler = async (req, res) => {
       verm_balance: 0,
       bonus_eligible: false,
       social_verified: false,
+      twitter_followed: false,
+      telegram_joined: false,
+      tweet_verified: false,
+      friends_invited: 0,
     };
     
     registrations.push(newRegistration);
@@ -132,17 +143,30 @@ export const updateVerification: RequestHandler = async (req, res) => {
     
     // Update verification status
     const registration = registrations[registrationIndex];
-    
-    if (data.twitter_verified !== undefined) {
-      // In production, verify Twitter follow status via API
-      registration.social_verified = data.twitter_verified && (data.telegram_verified ?? registration.social_verified);
+
+    if (data.twitter_followed !== undefined) {
+      registration.twitter_followed = data.twitter_followed;
     }
-    
-    if (data.telegram_verified !== undefined) {
-      // In production, verify Telegram membership via API
-      registration.social_verified = data.telegram_verified && (data.twitter_verified ?? registration.social_verified);
+
+    if (data.telegram_joined !== undefined) {
+      registration.telegram_joined = data.telegram_joined;
     }
-    
+
+    if (data.tweet_verified !== undefined) {
+      registration.tweet_verified = data.tweet_verified;
+    }
+
+    if (data.friends_invited !== undefined) {
+      registration.friends_invited = data.friends_invited;
+    }
+
+    // Update overall verification status - all requirements must be met
+    registration.social_verified =
+      registration.twitter_followed &&
+      registration.telegram_joined &&
+      registration.tweet_verified &&
+      registration.friends_invited >= 1;
+
     // Update bonus eligibility based on verification
     registration.bonus_eligible = registration.social_verified && registration.is_verm_holder;
     
