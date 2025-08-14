@@ -44,26 +44,22 @@ export const registerUser: RequestHandler = async (req, res) => {
   try {
     const data = RegistrationSchema.parse(req.body);
 
-    // Check if wallet already registered in Supabase
-    const { data: existingUser, error: checkError } = await supabase
-      .from('vermairdrop_registrations')
-      .select('*')
-      .eq('wallet_address', data.wallet_address)
-      .single();
+    // Check if wallet already registered
+    const existingRegistration = registrations.find(
+      reg => reg.wallet_address === data.wallet_address
+    );
 
-    if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows found
-      throw checkError;
-    }
-
-    if (existingUser) {
+    if (existingRegistration) {
       return res.status(409).json({
         error: "Wallet address already registered",
-        registration: existingUser
+        registration: existingRegistration
       });
     }
 
-    // Create new registration in Supabase
-    const newRegistration = {
+    // Create new registration
+    const newRegistration: Registration = {
+      id: nextId++,
+      timestamp: new Date().toISOString(),
       email: data.email,
       twitter: data.twitter,
       telegram: data.telegram,
@@ -78,19 +74,11 @@ export const registerUser: RequestHandler = async (req, res) => {
       friends_invited: 0,
     };
 
-    const { data: insertedData, error: insertError } = await supabase
-      .from('vermairdrop_registrations')
-      .insert([newRegistration])
-      .select()
-      .single();
-
-    if (insertError) {
-      throw insertError;
-    }
+    registrations.push(newRegistration);
 
     res.status(201).json({
       success: true,
-      registration: insertedData
+      registration: newRegistration
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
