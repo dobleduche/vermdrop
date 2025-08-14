@@ -306,8 +306,8 @@ export default function Index() {
               </CardHeader>
               <CardContent className="text-center">
                 <div className="text-6xl font-bold text-cyber-green mb-4">Share of</div>
-                <div className="text-4xl font-bold text-cyber-neon mb-2">$1,000,000</div>
-                <div className="text-xl text-cyber-light/80 mb-4">$VERM Tokens Reserved</div>
+                <div className="text-4xl font-bold text-cyber-neon mb-2">1,000,000</div>
+                <div className="text-xl text-cyber-light/80 mb-4">VERM Tokens Reserved</div>
                 <div className="space-y-2 text-sm text-cyber-light/60">
                   <p>✅ All verification steps completed</p>
                   <p>✅ Registration submitted successfully</p>
