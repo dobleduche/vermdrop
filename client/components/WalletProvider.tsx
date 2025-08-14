@@ -46,8 +46,14 @@ export const WalletProvider: FC<WalletProviderProps> = ({ children }) => {
   );
 
   const onError = (error: any) => {
+    // Handle user rejection gracefully - this is normal behavior
+    if (error?.message?.includes('User rejected') || error?.message?.includes('rejected')) {
+      console.log('User cancelled wallet connection');
+      return;
+    }
+
+    // Log other errors but don't throw
     console.error('Wallet error:', error);
-    // Don't throw, just log
   };
 
   return (
