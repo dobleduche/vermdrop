@@ -16,34 +16,120 @@ interface SocialVerification {
 }
 
 export default function Index() {
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
+  const { publicKey, connected } = useWallet();
+  const [registration, setRegistration] = useState<Registration | null>(null);
   const [socialVerified, setSocialVerified] = useState<SocialVerification>({
     twitter: false,
     telegram: false
   });
   const [claimProgress, setClaimProgress] = useState(0);
   const [isEligible, setIsEligible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Check eligibility based on social verifications
+  // Check for existing registration when wallet connects
   useEffect(() => {
-    setIsEligible(socialVerified.twitter && socialVerified.telegram && walletConnected);
-  }, [socialVerified, walletConnected]);
+    if (connected && publicKey) {
+      checkExistingRegistration();
+    } else {
+      setRegistration(null);
+    }
+  }, [connected, publicKey]);
 
-  const connectWallet = async () => {
-    // Mock wallet connection - will be replaced with actual Solana wallet adapter
-    setWalletConnected(true);
-    setWalletAddress('Auu4U7cVjm41yVnVtBCwHW2FBAKznPgLR7hQf4Esjups');
+  // Check eligibility based on registration and social verifications
+  useEffect(() => {
+    const hasRegistration = !!registration;
+    const socialComplete = socialVerified.twitter && socialVerified.telegram;
+    setIsEligible(hasRegistration && socialComplete && connected);
+  }, [registration, socialVerified, connected]);
+
+  const checkExistingRegistration = async () => {
+    if (!publicKey) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/registration/${publicKey.toString()}`);
+      if (response.ok) {
+        const result: RegistrationResponse = await response.json();
+        if (result.success && result.registration) {
+          setRegistration(result.registration);
+          // Update social verification status from registration
+          setSocialVerified({
+            twitter: result.registration.social_verified,
+            telegram: result.registration.social_verified
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error checking registration:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegistrationComplete = (newRegistration: Registration) => {
+    setRegistration(newRegistration);
   };
 
   const verifyTwitter = async () => {
-    // Mock Twitter verification - will be replaced with actual verification
-    setSocialVerified(prev => ({ ...prev, twitter: true }));
+    if (!publicKey || !registration) return;
+
+    // In production, this would redirect to Twitter OAuth or check follow status
+    // For now, we'll update the verification status directly
+    try {
+      const verificationData: VerificationRequest = {
+        wallet_address: publicKey.toString(),
+        twitter_verified: true,
+      };
+
+      const response = await fetch('/api/registration/verify', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(verificationData),
+      });
+
+      if (response.ok) {
+        const result: RegistrationResponse = await response.json();
+        if (result.success && result.registration) {
+          setRegistration(result.registration);
+          setSocialVerified(prev => ({ ...prev, twitter: true }));
+        }
+      }
+    } catch (error) {
+      console.error('Twitter verification error:', error);
+    }
   };
 
   const verifyTelegram = async () => {
-    // Mock Telegram verification - will be replaced with actual verification
-    setSocialVerified(prev => ({ ...prev, telegram: true }));
+    if (!publicKey || !registration) return;
+
+    // In production, this would check Telegram membership
+    // For now, we'll update the verification status directly
+    try {
+      const verificationData: VerificationRequest = {
+        wallet_address: publicKey.toString(),
+        telegram_verified: true,
+      };
+
+      const response = await fetch('/api/registration/verify', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(verificationData),
+      });
+
+      if (response.ok) {
+        const result: RegistrationResponse = await response.json();
+        if (result.success && result.registration) {
+          setRegistration(result.registration);
+          setSocialVerified(prev => ({ ...prev, telegram: true }));
+        }
+      }
+    } catch (error) {
+      console.error('Telegram verification error:', error);
+    }
   };
 
   const claimAirdrop = async () => {
