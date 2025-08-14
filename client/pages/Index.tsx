@@ -250,6 +250,11 @@ export default function Index() {
             </div>
           </div>
 
+          {/* Countdown Timer */}
+          <div className="mb-8">
+            <CountdownTimer />
+          </div>
+
           {/* Token Info Card */}
           <Card className="mb-8 cyber-border bg-cyber-dark/50 backdrop-blur-sm">
             <CardHeader>
