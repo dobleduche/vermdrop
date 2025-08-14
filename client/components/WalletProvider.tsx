@@ -28,22 +28,26 @@ export const WalletProvider: FC<WalletProviderProps> = ({ children }) => {
   // Configure endpoint - use Helius RPC if available, fallback to default
   const endpoint = useMemo(() => {
     const heliusRpc = import.meta.env.VITE_HELIUS_RPC_URL;
-    return heliusRpc || clusterApiUrl(network);
+    if (heliusRpc) {
+      console.log('Using Helius RPC:', heliusRpc);
+      return heliusRpc;
+    }
+    console.log('Using default RPC for network:', network);
+    return clusterApiUrl(network);
   }, [network]);
 
-  // Configure wallets - expanded list for better compatibility
+  // Configure wallets - minimal list for better compatibility
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
-      new LedgerWalletAdapter(),
-      new TorusWalletAdapter(),
+      new SolflareWalletAdapter(),
     ],
-    [network]
+    []
   );
 
   const onError = (error: any) => {
     console.error('Wallet error:', error);
+    // Don't throw, just log
   };
 
   return (
@@ -51,7 +55,7 @@ export const WalletProvider: FC<WalletProviderProps> = ({ children }) => {
       <SolanaWalletProvider
         wallets={wallets}
         onError={onError}
-        autoConnect={false}
+        autoConnect={true}
       >
         <WalletModalProvider>{children}</WalletModalProvider>
       </SolanaWalletProvider>
