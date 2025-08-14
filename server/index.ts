@@ -46,7 +46,7 @@ export function createServer() {
   });
 
   // Health check
-  app.get("/api/ping", generalLimiter.middleware(), (_req, res) => {
+  app.get("/ping", generalLimiter.middleware(), (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "pong";
     res.json({
       message: ping,
@@ -55,25 +55,25 @@ export function createServer() {
     });
   });
 
-  app.get("/api/demo", generalLimiter.middleware(), handleDemo);
+  app.get("/demo", generalLimiter.middleware(), handleDemo);
 
   // Registration endpoints with rate limiting
-  app.post("/api/registration",
+  app.post("/registration",
     registrationLimiter.middleware(),
     asyncHandler(registerUser)
   );
 
-  app.get("/api/registration/:wallet_address",
+  app.get("/registration/:wallet_address",
     generalLimiter.middleware(),
     asyncHandler(getRegistration)
   );
 
-  app.put("/api/registration/verify",
+  app.put("/registration/verify",
     verificationLimiter.middleware(),
     asyncHandler(updateVerification)
   );
 
-  app.get("/api/registration-stats",
+  app.get("/registration-stats",
     generalLimiter.middleware(),
     asyncHandler(getRegistrationStats)
   );
