@@ -16,8 +16,7 @@ import {
 } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
 
-// Import wallet adapter CSS
-import '@solana/wallet-adapter-react-ui/styles.css';
+// Note: Wallet adapter CSS will be handled via CDN or manual styling
 
 interface WalletProviderProps {
   children: ReactNode;
