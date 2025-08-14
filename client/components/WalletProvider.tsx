@@ -22,26 +22,33 @@ interface WalletProviderProps {
 }
 
 export const WalletProvider: FC<WalletProviderProps> = ({ children }) => {
-  // Configure network (mainnet-beta, devnet, testnet)
-  const network = WalletAdapterNetwork.Mainnet;
-  
+  // Configure network (devnet for testing, switch to mainnet for production)
+  const network = WalletAdapterNetwork.Devnet;
+
   // Configure endpoint
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-  // Configure wallets
+  // Configure wallets - simplified list
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter({ network }),
-      new LedgerWalletAdapter(),
       new TorusWalletAdapter(),
     ],
     [network]
   );
 
+  const onError = (error: any) => {
+    console.error('Wallet error:', error);
+  };
+
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <SolanaWalletProvider wallets={wallets} autoConnect>
+      <SolanaWalletProvider
+        wallets={wallets}
+        onError={onError}
+        autoConnect={false}
+      >
         <WalletModalProvider>{children}</WalletModalProvider>
       </SolanaWalletProvider>
     </ConnectionProvider>
