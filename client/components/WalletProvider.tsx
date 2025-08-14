@@ -22,11 +22,14 @@ interface WalletProviderProps {
 }
 
 export const WalletProvider: FC<WalletProviderProps> = ({ children }) => {
-  // Configure network (devnet for testing, switch to mainnet for production)
-  const network = WalletAdapterNetwork.Devnet;
+  // Configure network for mainnet
+  const network = WalletAdapterNetwork.Mainnet;
 
-  // Configure endpoint
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  // Configure endpoint - use Helius RPC if available, fallback to default
+  const endpoint = useMemo(() => {
+    const heliusRpc = import.meta.env.VITE_HELIUS_RPC_URL;
+    return heliusRpc || clusterApiUrl(network);
+  }, [network]);
 
   // Configure wallets - simplified list
   const wallets = useMemo(
