@@ -8,7 +8,8 @@ import { Progress } from '@/components/ui/progress';
 import { WalletButton } from '@/components/WalletButton';
 import { VerificationFlow } from '@/components/VerificationFlow';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
-import { CheckCircle2, Twitter, Send, Wallet, Users, Lock, Zap, Globe, Shield } from 'lucide-react';
+import { CountdownTimer } from '@/components/CountdownTimer';
+import { CheckCircle2, Twitter, Send, Wallet, Users, Lock, Zap, Globe, Shield, ExternalLink, Mail } from 'lucide-react';
 import { Registration, RegistrationResponse, VerificationRequest } from '@shared/registration';
 
 interface SocialVerification {
@@ -291,7 +292,8 @@ export default function Index() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <div className="text-6xl font-bold text-cyber-green mb-4">10,000</div>
+                <div className="text-6xl font-bold text-cyber-green mb-4">Share of</div>
+                <div className="text-4xl font-bold text-cyber-neon mb-2">$1,000,000</div>
                 <div className="text-xl text-cyber-light/80 mb-4">$VERM Tokens Reserved</div>
                 <div className="space-y-2 text-sm text-cyber-light/60">
                   <p>✅ All verification steps completed</p>
@@ -302,16 +304,57 @@ export default function Index() {
             </Card>
           )}
 
-          {/* Footer Info */}
-          <div className="mt-16 text-center text-cyber-light/60">
-            <p className="mb-4">
-              Built on Solana • Secured by the community • Powered by innovation
-            </p>
-            <div className="flex justify-center space-x-8 text-sm">
-              <a href="#" className="hover:text-cyber-neon transition-colors">Documentation</a>
-              <a href="#" className="hover:text-cyber-neon transition-colors">Tokenomics</a>
-              <a href="#" className="hover:text-cyber-neon transition-colors">Roadmap</a>
-              <a href="#" className="hover:text-cyber-neon transition-colors">Community</a>
+          {/* Official Links & Contact */}
+          <div className="mt-16 text-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+              {/* Official Links */}
+              <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-cyber-neon text-lg">Official Links</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <a
+                    href="https://nimrev.xyz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-full p-3 rounded-lg bg-cyber-darker border border-cyber-neon/20 hover:border-cyber-neon/40 hover:bg-cyber-darker/80 transition-all group"
+                  >
+                    <Globe className="w-5 h-5 mr-2 text-cyber-blue" />
+                    <span className="text-cyber-light group-hover:text-cyber-neon">NimRev.xyz</span>
+                    <ExternalLink className="w-4 h-4 ml-2 text-cyber-light/60" />
+                  </a>
+                  <a
+                    href="https://nimrev.xyz/docs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-full p-3 rounded-lg bg-cyber-darker border border-cyber-neon/20 hover:border-cyber-neon/40 hover:bg-cyber-darker/80 transition-all group"
+                  >
+                    <Shield className="w-5 h-5 mr-2 text-cyber-green" />
+                    <span className="text-cyber-light group-hover:text-cyber-neon">Documentation</span>
+                    <ExternalLink className="w-4 h-4 ml-2 text-cyber-light/60" />
+                  </a>
+                </CardContent>
+              </Card>
+
+              {/* Contact Information */}
+              <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-cyber-neon text-lg">Support</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <a
+                    href="mailto:support@nimrev.xyz"
+                    className="flex items-center justify-center w-full p-3 rounded-lg bg-cyber-darker border border-cyber-neon/20 hover:border-cyber-neon/40 hover:bg-cyber-darker/80 transition-all group"
+                  >
+                    <Mail className="w-5 h-5 mr-2 text-cyber-pink" />
+                    <span className="text-cyber-light group-hover:text-cyber-neon">support@nimrev.xyz</span>
+                  </a>
+                  <div className="text-center text-cyber-light/60 text-sm">
+                    <p className="mb-2">Blockchain Security & Intelligence</p>
+                    <p>Built on Solana • Secured by Innovation</p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
