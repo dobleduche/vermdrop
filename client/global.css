@@ -205,6 +205,80 @@
   .cyber-glow {
     animation: cyber-glow 2s ease-in-out infinite;
   }
+
+  /* 3D Beveled Title */
+  .title-3d {
+    font-weight: 900;
+    transform-style: preserve-3d;
+    animation: title-float 3s ease-in-out infinite, title-glow-cycle 4s ease-in-out infinite;
+    text-shadow:
+      2px 2px 0px #000,
+      4px 4px 0px rgba(0,0,0,0.8),
+      6px 6px 0px rgba(0,0,0,0.6),
+      8px 8px 0px rgba(0,0,0,0.4),
+      10px 10px 0px rgba(0,0,0,0.2),
+      0 0 20px hsl(var(--cyber-pink)),
+      0 0 40px hsl(var(--cyber-pink)),
+      0 0 60px hsl(var(--cyber-pink));
+  }
+
+  /* Cybergrid */
+  .cyber-grid {
+    background-image:
+      linear-gradient(hsl(var(--cyber-blue) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--cyber-blue) / 0.3) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid-pulse 2s ease-in-out infinite;
+  }
+
+  /* Falling Objects */
+  .falling-coin {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(45deg, hsl(var(--cyber-yellow)), hsl(var(--cyber-green)));
+    border-radius: 50%;
+    border: 2px solid hsl(var(--cyber-yellow));
+    box-shadow: 0 0 10px hsl(var(--cyber-yellow) / 0.5);
+    animation: fall-coin 8s linear infinite, coin-spin 1s linear infinite;
+    z-index: 1;
+  }
+
+  .falling-gift {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: linear-gradient(45deg, hsl(var(--cyber-pink)), hsl(var(--cyber-purple)));
+    border: 2px solid hsl(var(--cyber-pink));
+    box-shadow: 0 0 8px hsl(var(--cyber-pink) / 0.5);
+    animation: fall-gift 10s linear infinite, parachute-sway 2s ease-in-out infinite;
+    z-index: 1;
+  }
+
+  .falling-gift::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 20px;
+    background: linear-gradient(to bottom, hsl(var(--cyber-green) / 0.8), transparent);
+    border-radius: 50% 50% 0 0;
+    border: 1px solid hsl(var(--cyber-green));
+  }
+
+  .falling-gift::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 10px;
+    background: hsl(var(--cyber-light));
+    box-shadow: 0 0 2px hsl(var(--cyber-light));
+  }
 }
 
 @layer base {
