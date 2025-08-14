@@ -153,6 +153,16 @@ export default function Index() {
     <div className="min-h-screen bg-cyber-darker text-cyber-light overflow-hidden relative">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyber-dark via-cyber-darker to-black"></div>
+
+      {/* Airdrop Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-30"
+        style={{
+          backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2F29ccaf1d7d264cd2bd339333fe296f0c%2F28f7ef4eba7e4d4498ae85c36c778297?format=webp&width=1920')`,
+          backgroundBlendMode: 'overlay'
+        }}
+      ></div>
+
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-10 left-10 w-96 h-96 bg-cyber-pink rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-cyber-blue rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
@@ -167,9 +177,11 @@ export default function Index() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-cyber-pink to-cyber-blue rounded-lg flex items-center justify-center">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F29ccaf1d7d264cd2bd339333fe296f0c%2F4ecd21b2dfb64ce481313888fb98d440?format=webp&width=80"
+                alt="NimRev Logo"
+                className="w-10 h-10 object-contain"
+              />
               <h1 className="text-2xl font-bold neon-text text-cyber-neon title-3d">$VERM</h1>
             </div>
             <div className="flex items-center space-x-4">
@@ -193,12 +205,34 @@ export default function Index() {
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
+            {/* Blockchain Security Tagline */}
+            <div className="mb-6">
+              <p className="text-lg md:text-xl text-cyber-blue font-semibold tracking-wide uppercase mb-2">
+                Blockchain Security & Intelligence
+              </p>
+            </div>
+
             <h1 className="text-6xl md:text-8xl title-3d mb-6 bg-gradient-to-r from-cyber-pink via-cyber-blue to-cyber-green bg-clip-text text-transparent">
               $VERM AIRDROP
             </h1>
             <p className="text-xl md:text-2xl text-cyber-light/80 mb-8">
               Join the revolution. Claim your share of the future.
             </p>
+
+            {/* Airdrop Allocation Information */}
+            <div className="mb-8 p-6 rounded-lg border border-cyber-neon/30 bg-cyber-dark/60 backdrop-blur-sm max-w-2xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                <div className="space-y-2">
+                  <div className="text-cyber-pink font-bold text-lg">Allocation</div>
+                  <div className="text-cyber-light/80">20% of total supply</div>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-cyber-green font-bold text-lg">Vesting Terms</div>
+                  <div className="text-cyber-light/80">12 month linear vesting</div>
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center space-x-2">
                 <Shield className="w-5 h-5 text-cyber-green" />
