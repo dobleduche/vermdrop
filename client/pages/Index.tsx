@@ -6,7 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { WalletButton } from '@/components/WalletButton';
+import { RegistrationForm } from '@/components/RegistrationForm';
 import { CheckCircle2, Twitter, Send, Wallet, Users, Lock, Zap, Globe, Shield } from 'lucide-react';
+import { Registration, RegistrationResponse, VerificationRequest } from '@shared/registration';
 
 interface SocialVerification {
   twitter: boolean;
