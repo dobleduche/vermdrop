@@ -373,8 +373,8 @@ Get your tokens: ${window.location.href}`;
       </Card>
 
 
-      {/* Step 2 & 3: Social Media Verification */}
-      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${(currentStep === 1 || currentStep === 2) ? 'ring-2 ring-cyber-neon' : ''}`}>
+      {/* Step 1 & 2: Social Media Verification */}
+      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${(currentStep === 0 || currentStep === 1) ? 'ring-2 ring-cyber-neon' : ''}`}>
         <CardHeader>
           <CardTitle className="text-cyber-neon">Social Media Verification</CardTitle>
           <CardDescription className="text-cyber-light/60">
@@ -389,7 +389,7 @@ Get your tokens: ${window.location.href}`;
                 {steps[1].completed ? (
                   <CheckCircle2 className="w-6 h-6 text-cyber-green" />
                 ) : (
-                  <div className="w-6 h-6 rounded-full border-2 border-cyber-neon flex items-center justify-center text-xs">2</div>
+                  <div className="w-6 h-6 rounded-full border-2 border-cyber-neon flex items-center justify-center text-xs">1</div>
                 )}
                 <div>
                   <h4 className="font-medium text-cyber-light">Follow @nimrevxyz on Twitter</h4>
@@ -423,7 +423,7 @@ Get your tokens: ${window.location.href}`;
                 {steps[2].completed ? (
                   <CheckCircle2 className="w-6 h-6 text-cyber-green" />
                 ) : (
-                  <div className="w-6 h-6 rounded-full border-2 border-cyber-neon flex items-center justify-center text-xs">3</div>
+                  <div className="w-6 h-6 rounded-full border-2 border-cyber-neon flex items-center justify-center text-xs">2</div>
                 )}
                 <div>
                   <h4 className="font-medium text-cyber-light">Join @nimrevxyz Telegram</h4>
@@ -452,14 +452,14 @@ Get your tokens: ${window.location.href}`;
         </CardContent>
       </Card>
 
-      {/* Step 4: Tweet Verification */}
-      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 3 ? 'ring-2 ring-cyber-neon' : ''}`}>
+      {/* Step 3: Tweet Verification */}
+      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 2 ? 'ring-2 ring-cyber-neon' : ''}`}>
         <CardHeader>
           <CardTitle className="flex items-center">
             {steps[3].completed ? (
               <CheckCircle2 className="w-6 h-6 text-cyber-green mr-2" />
             ) : (
-              <div className="w-6 h-6 rounded-full border-2 border-cyber-neon mr-2 flex items-center justify-center text-xs">4</div>
+              <div className="w-6 h-6 rounded-full border-2 border-cyber-neon mr-2 flex items-center justify-center text-xs">3</div>
             )}
             Tweet About Project
           </CardTitle>
@@ -528,14 +528,14 @@ Get your tokens: ${window.location.href}`;
         </CardContent>
       </Card>
 
-      {/* Step 5: Final Registration */}
-      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 4 ? 'ring-2 ring-cyber-neon' : ''}`}>
+      {/* Step 4: Final Registration */}
+      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 3 ? 'ring-2 ring-cyber-neon' : ''}`}>
         <CardHeader>
           <CardTitle className="flex items-center">
             {steps[4].completed ? (
               <CheckCircle2 className="w-6 h-6 text-cyber-green mr-2" />
             ) : (
-              <div className="w-6 h-6 rounded-full border-2 border-cyber-neon mr-2 flex items-center justify-center text-xs">5</div>
+              <div className="w-6 h-6 rounded-full border-2 border-cyber-neon mr-2 flex items-center justify-center text-xs">4</div>
             )}
             Complete Registration
           </CardTitle>
