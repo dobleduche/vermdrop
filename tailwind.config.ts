@@ -57,6 +57,27 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Cyberpunk color palette
+        cyber: {
+          neon: "hsl(var(--cyber-neon))",
+          pink: "hsl(var(--cyber-pink))",
+          blue: "hsl(var(--cyber-blue))",
+          green: "hsl(var(--cyber-green))",
+          purple: "hsl(var(--cyber-purple))",
+          yellow: "hsl(var(--cyber-yellow))",
+          red: "hsl(var(--cyber-red))",
+          dark: "hsl(var(--cyber-dark))",
+          darker: "hsl(var(--cyber-darker))",
+          light: "hsl(var(--cyber-light))",
+        },
+        neon: {
+          pink: "hsl(var(--neon-pink))",
+          blue: "hsl(var(--neon-blue))",
+          green: "hsl(var(--neon-green))",
+          purple: "hsl(var(--neon-purple))",
+          yellow: "hsl(var(--neon-yellow))",
+          red: "hsl(var(--neon-red))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
