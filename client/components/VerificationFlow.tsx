@@ -372,28 +372,6 @@ Get your tokens: ${window.location.href}`;
         </CardContent>
       </Card>
 
-      {/* Step 1: Wallet Connection */}
-      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 0 ? 'ring-2 ring-cyber-neon' : ''}`}>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            {steps[0].completed ? (
-              <CheckCircle2 className="w-6 h-6 text-cyber-green mr-2" />
-            ) : (
-              <div className="w-6 h-6 rounded-full border-2 border-cyber-neon mr-2 flex items-center justify-center text-xs">1</div>
-            )}
-            Connect Wallet
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {!connected ? (
-            <WalletButton onConnect={() => setCurrentStep(1)} />
-          ) : (
-            <Badge className="bg-cyber-green/20 border-cyber-green text-cyber-green">
-              Wallet Connected
-            </Badge>
-          )}
-        </CardContent>
-      </Card>
 
       {/* Step 2 & 3: Social Media Verification */}
       <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${(currentStep === 1 || currentStep === 2) ? 'ring-2 ring-cyber-neon' : ''}`}>
