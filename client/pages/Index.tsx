@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { WalletButton } from '@/components/WalletButton';
-import { RegistrationForm } from '@/components/RegistrationForm';
+import { VerificationFlow } from '@/components/VerificationFlow';
 import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { CheckCircle2, Twitter, Send, Wallet, Users, Lock, Zap, Globe, Shield } from 'lucide-react';
 import { Registration, RegistrationResponse, VerificationRequest } from '@shared/registration';
@@ -239,10 +239,10 @@ export default function Index() {
             </CardContent>
           </Card>
 
-          {/* Registration Form */}
+          {/* Verification Flow */}
           <div className="mb-8">
-            <RegistrationForm
-              onRegistrationComplete={handleRegistrationComplete}
+            <VerificationFlow
+              onComplete={handleRegistrationComplete}
               existingRegistration={registration || undefined}
             />
           </div>
