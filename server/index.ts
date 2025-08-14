@@ -2,6 +2,12 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  registerUser,
+  getRegistration,
+  updateVerification,
+  getRegistrationStats
+} from "./routes/registration";
 
 export function createServer() {
   const app = express();
@@ -18,6 +24,12 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Registration endpoints
+  app.post("/api/registration", registerUser);
+  app.get("/api/registration/:wallet_address", getRegistration);
+  app.put("/api/registration/verify", updateVerification);
+  app.get("/api/registration-stats", getRegistrationStats);
 
   return app;
 }
