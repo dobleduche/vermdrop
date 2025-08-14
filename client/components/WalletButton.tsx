@@ -24,18 +24,24 @@ export const WalletButton: FC<WalletButtonProps> = ({ onConnect }) => {
         // Try to find Phantom first, fallback to first available wallet
         const phantomWallet = wallets.find(w => w.adapter.name === 'Phantom');
         const walletToUse = phantomWallet || wallets[0];
-        
+
         if (walletToUse) {
           console.log('Selecting wallet:', walletToUse.adapter.name);
           select(walletToUse.adapter.name);
         } else {
           console.error('No wallets available');
-          alert('Please install a Solana wallet like Phantom');
+          alert('Please install a Solana wallet like Phantom from https://phantom.app');
         }
       }
-    } catch (error) {
+    } catch (error: any) {
+      // Handle user rejection gracefully
+      if (error?.message?.includes('User rejected') || error?.message?.includes('rejected')) {
+        console.log('User cancelled wallet connection');
+        return;
+      }
+
       console.error('Wallet connection error:', error);
-      alert('Failed to connect wallet. Please try again.');
+      alert('Failed to connect wallet. Please make sure your wallet is unlocked and try again.');
     }
   };
 
