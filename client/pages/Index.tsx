@@ -247,129 +247,26 @@ export default function Index() {
             />
           </div>
 
-          {/* Claim Process */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Verification Steps */}
-            <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+          {/* Airdrop Info */}
+          {registration?.social_verified && (
+            <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm mb-8">
               <CardHeader>
-                <CardTitle className="text-cyber-neon">Verification Required</CardTitle>
+                <CardTitle className="text-cyber-green">🎉 Congratulations!</CardTitle>
                 <CardDescription className="text-cyber-light/60">
-                  Complete all steps to become eligible for the airdrop
+                  You're eligible for the $VERM airdrop
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Wallet Connection */}
-                <div className="flex items-center justify-between p-4 rounded-lg border border-cyber-neon/20 bg-cyber-darker/50">
-                  <div className="flex items-center space-x-3">
-                    <Wallet className={`w-6 h-6 ${connected ? 'text-cyber-green' : 'text-cyber-light/60'}`} />
-                    <div>
-                      <p className="font-medium">Connect Wallet</p>
-                      <p className="text-sm text-cyber-light/60">Solana-compatible wallet required</p>
-                    </div>
-                  </div>
-                  {connected ? (
-                    <CheckCircle2 className="w-6 h-6 text-cyber-green" />
-                  ) : (
-                    <WalletButton onConnect={() => {}} />
-                  )}
-                </div>
-
-                {/* Twitter Verification */}
-                <div className="flex items-center justify-between p-4 rounded-lg border border-cyber-neon/20 bg-cyber-darker/50">
-                  <div className="flex items-center space-x-3">
-                    <Twitter className={`w-6 h-6 ${socialVerified.twitter ? 'text-cyber-green' : 'text-cyber-light/60'}`} />
-                    <div>
-                      <p className="font-medium">Follow @nimrevxyz</p>
-                      <p className="text-sm text-cyber-light/60">Twitter verification required</p>
-                    </div>
-                  </div>
-                  {socialVerified.twitter ? (
-                    <CheckCircle2 className="w-6 h-6 text-cyber-green" />
-                  ) : (
-                    <Button
-                      onClick={verifyTwitter}
-                      size="sm"
-                      disabled={!registration}
-                      className="bg-cyber-blue hover:bg-cyber-blue/80 disabled:opacity-50"
-                    >
-                      Verify
-                    </Button>
-                  )}
-                </div>
-
-                {/* Telegram Verification */}
-                <div className="flex items-center justify-between p-4 rounded-lg border border-cyber-neon/20 bg-cyber-darker/50">
-                  <div className="flex items-center space-x-3">
-                    <Send className={`w-6 h-6 ${socialVerified.telegram ? 'text-cyber-green' : 'text-cyber-light/60'}`} />
-                    <div>
-                      <p className="font-medium">Join @nimrevxyz</p>
-                      <p className="text-sm text-cyber-light/60">Telegram verification required</p>
-                    </div>
-                  </div>
-                  {socialVerified.telegram ? (
-                    <CheckCircle2 className="w-6 h-6 text-cyber-green" />
-                  ) : (
-                    <Button
-                      onClick={verifyTelegram}
-                      size="sm"
-                      disabled={!registration}
-                      className="bg-cyber-purple hover:bg-cyber-purple/80 disabled:opacity-50"
-                    >
-                      Verify
-                    </Button>
-                  )}
+              <CardContent className="text-center">
+                <div className="text-6xl font-bold text-cyber-green mb-4">10,000</div>
+                <div className="text-xl text-cyber-light/80 mb-4">$VERM Tokens Reserved</div>
+                <div className="space-y-2 text-sm text-cyber-light/60">
+                  <p>✅ All verification steps completed</p>
+                  <p>✅ Registration submitted successfully</p>
+                  <p>⏳ Airdrop distribution coming soon</p>
                 </div>
               </CardContent>
             </Card>
-
-            {/* Claim Card */}
-            <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-cyber-neon">Claim Your Airdrop</CardTitle>
-                <CardDescription className="text-cyber-light/60">
-                  Ready to claim when all verifications are complete
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-cyber-green mb-2">10,000</div>
-                  <div className="text-cyber-light/60">$VERM Tokens</div>
-                </div>
-
-                <Separator className="bg-cyber-neon/20" />
-
-                {claimProgress > 0 && claimProgress < 100 && (
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Claiming...</span>
-                      <span>{claimProgress}%</span>
-                    </div>
-                    <Progress value={claimProgress} className="w-full" />
-                  </div>
-                )}
-
-                <Button
-                  onClick={claimAirdrop}
-                  disabled={!isEligible || (claimProgress > 0 && claimProgress < 100)}
-                  className={`w-full h-12 text-lg font-semibold ${
-                    isEligible 
-                      ? 'bg-cyber-green hover:bg-cyber-green/80 cyber-glow' 
-                      : 'bg-cyber-light/20'
-                  }`}
-                >
-                  {claimProgress === 100 ? 'Claimed!' : 
-                   claimProgress > 0 ? 'Claiming...' : 
-                   isEligible ? 'Claim Airdrop' : 'Complete Verification'}
-                </Button>
-
-                {!isEligible && (
-                  <p className="text-center text-sm text-cyber-light/60">
-                    Complete all verification steps to enable claiming
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+          )}
 
           {/* Footer Info */}
           <div className="mt-16 text-center text-cyber-light/60">
