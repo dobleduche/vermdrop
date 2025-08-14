@@ -31,11 +31,12 @@ export const WalletProvider: FC<WalletProviderProps> = ({ children }) => {
     return heliusRpc || clusterApiUrl(network);
   }, [network]);
 
-  // Configure wallets - simplified list
+  // Configure wallets - expanded list for better compatibility
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter({ network }),
+      new LedgerWalletAdapter(),
       new TorusWalletAdapter(),
     ],
     [network]
