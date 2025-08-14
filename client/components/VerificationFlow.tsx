@@ -9,7 +9,8 @@ import { Progress } from '@/components/ui/progress';
 import { CheckCircle2, Twitter, Send, ExternalLink, Users, AlertCircle, Mail, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { WalletButton } from '@/components/WalletButton';
-import { Registration, RegistrationRequest, RegistrationResponse } from '@shared/registration';
+import { Registration, RegistrationRequest, RegistrationResponse, VerificationRequest } from '@shared/registration';
+import { verifyTwitterFollow, verifyTelegramJoin, verifyTweet } from '@/lib/socialVerification';
 
 interface VerificationStep {
   id: string;
@@ -113,33 +114,89 @@ export const VerificationFlow = ({ onComplete, existingRegistration }: Verificat
   const progress = (completedSteps / steps.length) * 100;
 
   const handleTwitterFollow = async () => {
-    // Open Twitter profile in new tab
-    window.open('https://twitter.com/nimrevxyz', '_blank');
-    
-    // Mark as completed (in production, verify via API)
-    setTimeout(() => {
-      setSteps(prev => prev.map(step => 
-        step.id === 'twitter-follow' 
-          ? { ...step, completed: true }
-          : step
-      ));
-      if (currentStep === 1) setCurrentStep(2);
-    }, 2000);
+    if (!publicKey) return;
+
+    setError('');
+
+    try {
+      // Use real verification function
+      const isFollowing = await verifyTwitterFollow('nimrevxyz');
+
+      if (isFollowing) {
+        // Update verification status via API
+        const verificationData: VerificationRequest = {
+          wallet_address: publicKey.toString(),
+          twitter_followed: true,
+        };
+
+        const response = await fetch('/api/registration/verify', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(verificationData),
+        });
+
+        if (response.ok) {
+          setSteps(prev => prev.map(step =>
+            step.id === 'twitter-follow'
+              ? { ...step, completed: true }
+              : step
+          ));
+          if (currentStep === 1) setCurrentStep(2);
+        } else {
+          setError('Failed to verify Twitter follow. Please try again.');
+        }
+      } else {
+        setError('Please follow @nimrevxyz on Twitter and try again.');
+      }
+    } catch (error) {
+      setError('Error verifying Twitter follow. Please try again.');
+      console.error('Twitter verification error:', error);
+    }
   };
 
   const handleTelegramJoin = async () => {
-    // Open Telegram group in new tab
-    window.open('https://t.me/nimrevxyz', '_blank');
-    
-    // Mark as completed (in production, verify via API)
-    setTimeout(() => {
-      setSteps(prev => prev.map(step => 
-        step.id === 'telegram-join' 
-          ? { ...step, completed: true }
-          : step
-      ));
-      if (currentStep === 2) setCurrentStep(3);
-    }, 2000);
+    if (!publicKey) return;
+
+    setError('');
+
+    try {
+      // Use real verification function
+      const hasJoined = await verifyTelegramJoin();
+
+      if (hasJoined) {
+        // Update verification status via API
+        const verificationData: VerificationRequest = {
+          wallet_address: publicKey.toString(),
+          telegram_joined: true,
+        };
+
+        const response = await fetch('/api/registration/verify', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(verificationData),
+        });
+
+        if (response.ok) {
+          setSteps(prev => prev.map(step =>
+            step.id === 'telegram-join'
+              ? { ...step, completed: true }
+              : step
+          ));
+          if (currentStep === 2) setCurrentStep(3);
+        } else {
+          setError('Failed to verify Telegram join. Please try again.');
+        }
+      } else {
+        setError('Please join the @nimrevxyz Telegram group and try again.');
+      }
+    } catch (error) {
+      setError('Error verifying Telegram join. Please try again.');
+      console.error('Telegram verification error:', error);
+    }
   };
 
   const generateTweetText = () => {
@@ -151,6 +208,8 @@ Get your tokens: ${window.location.href}`;
   };
 
   const handleTweetVerification = async () => {
+    if (!publicKey) return;
+
     if (!formData.tweetUrl) {
       setError('Please provide your tweet URL');
       return;
@@ -162,15 +221,46 @@ Get your tokens: ${window.location.href}`;
     }
 
     setError('');
-    
-    // Mark tweet as verified (in production, verify via API)
-    setSteps(prev => prev.map(step => 
-      step.id === 'tweet' 
-        ? { ...step, completed: true }
-        : step
-    ));
-    
-    if (currentStep === 3) setCurrentStep(4);
+
+    try {
+      // Use real tweet verification
+      const requiredHashtags = ['#NimRev', '#VERM', '#GridSecurity'];
+      const isTweetValid = await verifyTweet(formData.tweetUrl, requiredHashtags);
+
+      if (isTweetValid) {
+        // Update verification status via API
+        const verificationData: VerificationRequest = {
+          wallet_address: publicKey.toString(),
+          tweet_verified: true,
+          tweet_url: formData.tweetUrl,
+          friends_invited: formData.friendsInvited,
+        };
+
+        const response = await fetch('/api/registration/verify', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(verificationData),
+        });
+
+        if (response.ok) {
+          setSteps(prev => prev.map(step =>
+            step.id === 'tweet'
+              ? { ...step, completed: true }
+              : step
+          ));
+          if (currentStep === 3) setCurrentStep(4);
+        } else {
+          setError('Failed to verify tweet. Please try again.');
+        }
+      } else {
+        setError('Tweet verification failed. Please ensure your tweet includes the required hashtags and mentions.');
+      }
+    } catch (error) {
+      setError('Error verifying tweet. Please check the URL and try again.');
+      console.error('Tweet verification error:', error);
+    }
   };
 
   const handleFinalSubmission = async () => {
