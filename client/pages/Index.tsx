@@ -274,18 +274,16 @@ export default function Index() {
                 {/* Wallet Connection */}
                 <div className="flex items-center justify-between p-4 rounded-lg border border-cyber-neon/20 bg-cyber-darker/50">
                   <div className="flex items-center space-x-3">
-                    <Wallet className={`w-6 h-6 ${walletConnected ? 'text-cyber-green' : 'text-cyber-light/60'}`} />
+                    <Wallet className={`w-6 h-6 ${connected ? 'text-cyber-green' : 'text-cyber-light/60'}`} />
                     <div>
                       <p className="font-medium">Connect Wallet</p>
                       <p className="text-sm text-cyber-light/60">Solana-compatible wallet required</p>
                     </div>
                   </div>
-                  {walletConnected ? (
+                  {connected ? (
                     <CheckCircle2 className="w-6 h-6 text-cyber-green" />
                   ) : (
-                    <Button onClick={connectWallet} size="sm" className="bg-cyber-pink hover:bg-cyber-pink/80">
-                      Connect
-                    </Button>
+                    <WalletButton onConnect={() => {}} />
                   )}
                 </div>
 
@@ -301,7 +299,12 @@ export default function Index() {
                   {socialVerified.twitter ? (
                     <CheckCircle2 className="w-6 h-6 text-cyber-green" />
                   ) : (
-                    <Button onClick={verifyTwitter} size="sm" className="bg-cyber-blue hover:bg-cyber-blue/80">
+                    <Button
+                      onClick={verifyTwitter}
+                      size="sm"
+                      disabled={!registration}
+                      className="bg-cyber-blue hover:bg-cyber-blue/80 disabled:opacity-50"
+                    >
                       Verify
                     </Button>
                   )}
@@ -319,7 +322,12 @@ export default function Index() {
                   {socialVerified.telegram ? (
                     <CheckCircle2 className="w-6 h-6 text-cyber-green" />
                   ) : (
-                    <Button onClick={verifyTelegram} size="sm" className="bg-cyber-purple hover:bg-cyber-purple/80">
+                    <Button
+                      onClick={verifyTelegram}
+                      size="sm"
+                      disabled={!registration}
+                      className="bg-cyber-purple hover:bg-cyber-purple/80 disabled:opacity-50"
+                    >
                       Verify
                     </Button>
                   )}
