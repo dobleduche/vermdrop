@@ -170,7 +170,7 @@ export default function Index() {
               <div className="w-10 h-10 bg-gradient-to-r from-cyber-pink to-cyber-blue rounded-lg flex items-center justify-center">
                 <Zap className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-2xl font-bold neon-text text-cyber-neon">$VERM</h1>
+              <h1 className="text-2xl font-bold neon-text text-cyber-neon title-3d">$VERM</h1>
             </div>
             <div className="flex items-center space-x-4">
               <Badge variant="secondary" className="bg-cyber-dark border-cyber-neon text-cyber-light">
