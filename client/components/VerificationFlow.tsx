@@ -395,65 +395,82 @@ Get your tokens: ${window.location.href}`;
         </CardContent>
       </Card>
 
-      {/* Step 2: Twitter Follow */}
-      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 1 ? 'ring-2 ring-cyber-neon' : ''}`}>
+      {/* Step 2 & 3: Social Media Verification */}
+      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${(currentStep === 1 || currentStep === 2) ? 'ring-2 ring-cyber-neon' : ''}`}>
         <CardHeader>
-          <CardTitle className="flex items-center">
-            {steps[1].completed ? (
-              <CheckCircle2 className="w-6 h-6 text-cyber-green mr-2" />
-            ) : (
-              <div className="w-6 h-6 rounded-full border-2 border-cyber-neon mr-2 flex items-center justify-center text-xs">2</div>
-            )}
-            Follow @nimrevxyz on Twitter
-          </CardTitle>
+          <CardTitle className="text-cyber-neon">Social Media Verification</CardTitle>
+          <CardDescription className="text-cyber-light/60">
+            Follow our accounts to stay updated and prove you're part of the community
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          {!steps[1].completed ? (
-            <Button
-              onClick={handleTwitterFollow}
-              disabled={!canProceed(1)}
-              className="bg-cyber-blue hover:bg-cyber-blue/80"
-            >
-              <Twitter className="w-4 h-4 mr-2" />
-              Follow on Twitter
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </Button>
-          ) : (
-            <Badge className="bg-cyber-green/20 border-cyber-green text-cyber-green">
-              Following @nimrevxyz
-            </Badge>
-          )}
-        </CardContent>
-      </Card>
+        <CardContent className="space-y-6">
+          {/* Twitter Follow */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {steps[1].completed ? (
+                  <CheckCircle2 className="w-6 h-6 text-cyber-green" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full border-2 border-cyber-neon flex items-center justify-center text-xs">2</div>
+                )}
+                <div>
+                  <h4 className="font-medium text-cyber-light">Follow @nimrevxyz on Twitter</h4>
+                  <p className="text-sm text-cyber-light/60">Stay updated with project news</p>
+                </div>
+              </div>
 
-      {/* Step 3: Telegram Join */}
-      <Card className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 2 ? 'ring-2 ring-cyber-neon' : ''}`}>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            {steps[2].completed ? (
-              <CheckCircle2 className="w-6 h-6 text-cyber-green mr-2" />
-            ) : (
-              <div className="w-6 h-6 rounded-full border-2 border-cyber-neon mr-2 flex items-center justify-center text-xs">3</div>
-            )}
-            Join Telegram Group
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {!steps[2].completed ? (
-            <Button
-              onClick={handleTelegramJoin}
-              disabled={!canProceed(2)}
-              className="bg-cyber-purple hover:bg-cyber-purple/80"
-            >
-              <Send className="w-4 h-4 mr-2" />
-              Join @nimrevxyz
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </Button>
-          ) : (
-            <Badge className="bg-cyber-green/20 border-cyber-green text-cyber-green">
-              Joined Telegram Group
-            </Badge>
-          )}
+              {!steps[1].completed ? (
+                <Button
+                  onClick={handleTwitterFollow}
+                  disabled={!canProceed(1)}
+                  className="bg-cyber-blue hover:bg-cyber-blue/80"
+                  size="sm"
+                >
+                  <Twitter className="w-4 h-4 mr-2" />
+                  Follow
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </Button>
+              ) : (
+                <Badge className="bg-cyber-green/20 border-cyber-green text-cyber-green">
+                  ✓ Following
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          {/* Telegram Join */}
+          <div className="space-y-4 pt-4 border-t border-cyber-neon/20">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {steps[2].completed ? (
+                  <CheckCircle2 className="w-6 h-6 text-cyber-green" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full border-2 border-cyber-neon flex items-center justify-center text-xs">3</div>
+                )}
+                <div>
+                  <h4 className="font-medium text-cyber-light">Join @nimrevxyz Telegram</h4>
+                  <p className="text-sm text-cyber-light/60">Get exclusive updates and support</p>
+                </div>
+              </div>
+
+              {!steps[2].completed ? (
+                <Button
+                  onClick={handleTelegramJoin}
+                  disabled={!canProceed(2)}
+                  className="bg-cyber-purple hover:bg-cyber-purple/80"
+                  size="sm"
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  Join
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </Button>
+              ) : (
+                <Badge className="bg-cyber-green/20 border-cyber-green text-cyber-green">
+                  ✓ Joined
+                </Badge>
+              )}
+            </div>
+          </div>
         </CardContent>
       </Card>
 
