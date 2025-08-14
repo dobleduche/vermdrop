@@ -2,18 +2,14 @@
 
 export const verifyTwitterFollow = async (username: string): Promise<boolean> => {
   try {
-    // In production, this would use Twitter API to check if user follows @nimrevxyz
-    // For now, we'll simulate verification after opening Twitter
-    
     // Open Twitter profile
     window.open(`https://twitter.com/nimrevxyz`, '_blank');
-    
-    // Return promise that resolves after user has time to follow
+
+    // User confirmation process (in production, would use Twitter API)
     return new Promise((resolve) => {
       setTimeout(() => {
-        // In production, make actual API call here
         const userConfirms = window.confirm(
-          'Have you followed @nimrevxyz on Twitter? Click OK if yes, Cancel to try again.'
+          'Have you followed @nimrevxyz on Twitter?\n\nClick OK if you have followed, or Cancel to try again.'
         );
         resolve(userConfirms);
       }, 3000);
@@ -26,17 +22,14 @@ export const verifyTwitterFollow = async (username: string): Promise<boolean> =>
 
 export const verifyTelegramJoin = async (): Promise<boolean> => {
   try {
-    // In production, this would use Telegram Bot API to check membership
-    
     // Open Telegram group
     window.open('https://t.me/nimrevxyz', '_blank');
-    
-    // Return promise that resolves after user has time to join
+
+    // User confirmation process (in production, would use Telegram Bot API)
     return new Promise((resolve) => {
       setTimeout(() => {
-        // In production, make actual API call here
         const userConfirms = window.confirm(
-          'Have you joined the @nimrevxyz Telegram group? Click OK if yes, Cancel to try again.'
+          'Have you joined the @nimrevxyz Telegram group?\n\nClick OK if you have joined, or Cancel to try again.'
         );
         resolve(userConfirms);
       }, 3000);
@@ -68,15 +61,15 @@ export const verifyTweet = async (tweetUrl: string, requiredHashtags: string[]):
     // 3. Verify it mentions @nimrevxyz
     // 4. Check if user invited friends (mentions or retweets)
     
-    // For now, simulate verification
-    const hasRequiredHashtags = requiredHashtags.some(hashtag => 
+    // Basic hashtag check in URL (in production, would fetch tweet content via API)
+    const hasRequiredHashtags = requiredHashtags.some(hashtag =>
       tweetUrl.toLowerCase().includes(hashtag.toLowerCase())
     );
-    
+
     if (!hasRequiredHashtags) {
       // Ask user to confirm they included hashtags
       const userConfirms = window.confirm(
-        `Please confirm your tweet includes at least one of these hashtags: ${requiredHashtags.join(', ')}\n\nDid you include the required hashtags?`
+        `Please confirm your tweet includes at least one of these hashtags:\n${requiredHashtags.join(', ')}\n\nDid you include the required hashtags and invite friends?`
       );
       return userConfirms;
     }
@@ -91,14 +84,15 @@ export const verifyTweet = async (tweetUrl: string, requiredHashtags: string[]):
 // Helper function to check if wallet holds VERM tokens
 export const checkVermTokenBalance = async (walletAddress: string): Promise<{ hasTokens: boolean; balance: number }> => {
   try {
-    // In production, this would:
-    // 1. Use Solana RPC to check token balance
-    // 2. Look for VERM token account
-    // 3. Return actual balance
-    
-    // For now, simulate (could integrate with actual Solana RPC)
+    // Production implementation would use Solana RPC:
+    // 1. Connect to Solana cluster
+    // 2. Get token accounts for wallet
+    // 3. Check VERM token mint balance
+    // 4. Return actual balance
+
+    // Placeholder implementation (airdrop hasn't happened yet)
     return {
-      hasTokens: false, // Most users won't have tokens yet
+      hasTokens: false,
       balance: 0
     };
   } catch (error) {
