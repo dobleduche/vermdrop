@@ -31,7 +31,16 @@ ON public.vermairdrop_registrations
 USING btree (social_verified) 
 TABLESPACE pg_default;
 
-CREATE INDEX IF NOT EXISTS idx_bonus_eligible 
-ON public.vermairdrop_registrations 
-USING btree (bonus_eligible) 
+CREATE INDEX IF NOT EXISTS idx_bonus_eligible
+ON public.vermairdrop_registrations
+USING btree (bonus_eligible)
 TABLESPACE pg_default;
+
+-- Prevent duplicate signups by email (case-insensitive)
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_indexes WHERE schemaname = 'public' AND indexname = 'vermairdrop_registrations_email_unique_idx'
+  ) THEN
+    EXECUTE 'CREATE UNIQUE INDEX vermairdrop_registrations_email_unique_idx ON public.vermairdrop_registrations (lower(email))';
+  END IF;
+END $$;
