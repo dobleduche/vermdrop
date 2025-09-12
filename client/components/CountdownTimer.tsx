@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Clock } from "lucide-react";
 
 interface TimeLeft {
   days: number;
@@ -10,11 +10,16 @@ interface TimeLeft {
 }
 
 export const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     // Calculate target date (85 days and 12 hours from now)
-    const targetDate = new Date(Date.now() + ((85 * 24 + 12) * 60 * 60 * 1000));
+    const targetDate = new Date(Date.now() + (85 * 24 + 12) * 60 * 60 * 1000);
 
     const calculateTimeLeft = () => {
       const now = new Date().getTime();
@@ -23,8 +28,12 @@ export const CountdownTimer = () => {
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const hours = Math.floor(
+          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor(
+          (difference % (1000 * 60 * 60)) / (1000 * 60),
+        );
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
         setTimeLeft({ days, hours, minutes, seconds });
@@ -42,7 +51,7 @@ export const CountdownTimer = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatNumber = (num: number) => num.toString().padStart(2, '0');
+  const formatNumber = (num: number) => num.toString().padStart(2, "0");
 
   return (
     <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
@@ -87,14 +96,12 @@ export const CountdownTimer = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-6 text-center">
           <div className="text-2xl md:text-3xl font-bold text-cyber-neon mb-2">
             1,000,000 VERM
           </div>
-          <div className="text-cyber-light/80">
-            Total Airdrop Pool
-          </div>
+          <div className="text-cyber-light/80">Total Airdrop Pool</div>
         </div>
       </CardContent>
     </Card>

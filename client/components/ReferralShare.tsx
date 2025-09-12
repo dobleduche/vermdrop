@@ -25,7 +25,10 @@ export default function ReferralShare() {
       try {
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), 8000);
-        const res = await fetch(`/api/referral/${publicKey.toString()}`, { signal: controller.signal, headers: { Accept: 'application/json' } });
+        const res = await fetch(`/api/referral/${publicKey.toString()}`, {
+          signal: controller.signal,
+          headers: { Accept: "application/json" },
+        });
         clearTimeout(id);
         if (!res.ok) return;
         const json: ReferralResponse = await res.json();
@@ -34,7 +37,7 @@ export default function ReferralShare() {
           setTotal(json.info.total_referred);
         }
       } catch (e) {
-        console.warn('Referral fetch failed', e);
+        console.warn("Referral fetch failed", e);
       }
     })();
   }, [connected, publicKey]);
@@ -54,7 +57,11 @@ export default function ReferralShare() {
           Share your referral link. Successful registrations credited to you.
         </div>
         <div className="flex gap-2">
-          <Input value={link} readOnly className="bg-cyber-darker border-cyber-neon/20 text-cyber-light" />
+          <Input
+            value={link}
+            readOnly
+            className="bg-cyber-darker border-cyber-neon/20 text-cyber-light"
+          />
           <Button
             onClick={() => {
               if (link) navigator.clipboard.writeText(link);
@@ -64,7 +71,9 @@ export default function ReferralShare() {
             <Copy className="w-4 h-4 mr-2" /> Copy
           </Button>
         </div>
-        <Badge className="bg-cyber-green/20 border-cyber-green text-cyber-green">Total referred: {total}</Badge>
+        <Badge className="bg-cyber-green/20 border-cyber-green text-cyber-green">
+          Total referred: {total}
+        </Badge>
       </CardContent>
     </Card>
   );

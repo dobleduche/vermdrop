@@ -328,9 +328,7 @@ export default function Index() {
           </div>
 
           {/* Referral Share */}
-          <div className="mb-8">
-            {connected && <ReferralShare />}
-          </div>
+          <div className="mb-8">{connected && <ReferralShare />}</div>
 
           {/* Airdrop Info */}
           {registration?.social_verified && (

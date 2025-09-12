@@ -3,7 +3,10 @@ import { supabase } from "./supabase";
 function generateCodeFromWallet(wallet: string): string {
   // Simple deterministic short code from wallet
   const base = wallet.replace(/[^a-zA-Z0-9]/g, "");
-  const hash = Array.from(base).reduce((acc, c) => (acc * 33 + c.charCodeAt(0)) >>> 0, 5381);
+  const hash = Array.from(base).reduce(
+    (acc, c) => (acc * 33 + c.charCodeAt(0)) >>> 0,
+    5381,
+  );
   return (hash.toString(36) + base.slice(0, 4)).toLowerCase();
 }
 
@@ -45,7 +48,10 @@ export async function getOrCreateReferral(wallet_address: string) {
   return insert.data!;
 }
 
-export async function trackReferralEvent(referral_code: string, referee_wallet_address: string) {
+export async function trackReferralEvent(
+  referral_code: string,
+  referee_wallet_address: string,
+) {
   // Resolve referrer by code
   const ref = await supabase
     .from("vermairdrop_referrals")
@@ -57,7 +63,13 @@ export async function trackReferralEvent(referral_code: string, referee_wallet_a
   // Insert event, ignore duplicates
   const ins = await supabase
     .from("vermairdrop_referral_events")
-    .insert([{ referral_code, referrer_wallet_address: ref.data.referrer_wallet_address, referee_wallet_address }])
+    .insert([
+      {
+        referral_code,
+        referrer_wallet_address: ref.data.referrer_wallet_address,
+        referee_wallet_address,
+      },
+    ])
     .select("id")
     .single();
 
@@ -68,13 +80,17 @@ export async function trackReferralEvent(referral_code: string, referee_wallet_a
   // Increment aggregate counter
   await supabase
     .from("vermairdrop_referrals")
-    .update({ total_referred: (await getReferralCount(ref.data.referrer_wallet_address)) })
+    .update({
+      total_referred: await getReferralCount(ref.data.referrer_wallet_address),
+    })
     .eq("referrer_wallet_address", ref.data.referrer_wallet_address);
 
   return { ok: true };
 }
 
-export async function getReferralCount(referrer_wallet_address: string): Promise<number> {
+export async function getReferralCount(
+  referrer_wallet_address: string,
+): Promise<number> {
   const cnt = await supabase
     .from("vermairdrop_referral_events")
     .select("id", { count: "exact", head: true })

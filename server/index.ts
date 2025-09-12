@@ -53,7 +53,10 @@ export function createServer() {
     res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
     if (process.env.NODE_ENV === "production") {
-      res.setHeader("Strict-Transport-Security", "max-age=15552000; includeSubDomains");
+      res.setHeader(
+        "Strict-Transport-Security",
+        "max-age=15552000; includeSubDomains",
+      );
     }
     next();
   });

@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
 interface FallingObject {
   id: number;
-  type: 'coin' | 'gift';
+  type: "coin" | "gift";
   left: number;
   delay: number;
   duration: number;
@@ -16,7 +16,7 @@ export const AnimatedBackground = () => {
     for (let i = 0; i < 15; i++) {
       objects.push({
         id: i,
-        type: Math.random() > 0.6 ? 'gift' : 'coin',
+        type: Math.random() > 0.6 ? "gift" : "coin",
         left: Math.random() * 100,
         delay: Math.random() * 10,
         duration: 8 + Math.random() * 4,
@@ -25,23 +25,30 @@ export const AnimatedBackground = () => {
     setFallingObjects(objects);
 
     const interval = setInterval(() => {
-      setFallingObjects(prev => {
+      setFallingObjects((prev) => {
         const newObject: FallingObject = {
           id: Date.now() + Math.random(),
-          type: Math.random() > 0.6 ? 'gift' : 'coin',
+          type: Math.random() > 0.6 ? "gift" : "coin",
           left: Math.random() * 100,
           delay: 0,
           duration: 8 + Math.random() * 4,
         };
-        const filtered = prev.filter(obj => Date.now() - obj.id < 15000);
+        const filtered = prev.filter((obj) => Date.now() - obj.id < 15000);
         return [...filtered, newObject];
       });
     }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  const matrixCols = useMemo(() => Array.from({ length: 14 }).map((_, i) => i), []);
-  const matrixChars = useMemo(() => Array.from({ length: 28 }).map(() => (Math.random() > 0.5 ? '1' : '0')), []);
+  const matrixCols = useMemo(
+    () => Array.from({ length: 14 }).map((_, i) => i),
+    [],
+  );
+  const matrixChars = useMemo(
+    () =>
+      Array.from({ length: 28 }).map(() => (Math.random() > 0.5 ? "1" : "0")),
+    [],
+  );
 
   return (
     <>
@@ -82,7 +89,7 @@ export const AnimatedBackground = () => {
             style={{
               top: `${10 + i * 10}%`,
               animation: `grid-pulse ${3 + i * 0.2}s ease-in-out infinite`,
-              animationDelay: `${i * 0.3}s`
+              animationDelay: `${i * 0.3}s`,
             }}
           />
         ))}
@@ -93,19 +100,19 @@ export const AnimatedBackground = () => {
         {fallingObjects.map((obj) => (
           <div
             key={obj.id}
-            className={obj.type === 'coin' ? 'falling-coin' : 'falling-gift'}
+            className={obj.type === "coin" ? "falling-coin" : "falling-gift"}
             style={{
               left: `${obj.left}%`,
               animationDelay: `${obj.delay}s`,
               animationDuration: `${obj.duration}s`,
             }}
           >
-            {obj.type === 'coin' && (
+            {obj.type === "coin" && (
               <div className="w-full h-full flex items-center justify-center text-xs font-bold text-cyber-dark">
                 $
               </div>
             )}
-            {obj.type === 'gift' && (
+            {obj.type === "gift" && (
               <div className="w-full h-full flex items-center justify-center text-xs font-bold text-cyber-light">
                 🎁
               </div>
@@ -141,8 +148,8 @@ export const AnimatedBackground = () => {
               top: `${20 + i * 30}%`,
               animation: `matrix-rain ${6 + i}s linear infinite`,
               animationDelay: `${i * 2}s`,
-              transform: 'rotate(45deg)',
-              transformOrigin: 'center',
+              transform: "rotate(45deg)",
+              transformOrigin: "center",
             }}
           />
         ))}

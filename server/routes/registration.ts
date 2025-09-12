@@ -5,21 +5,37 @@ import { supabase } from "../lib/supabase";
 // Validation schemas
 const RegistrationSchema = z.object({
   email: z.string().email("Invalid email format"),
-  twitter: z.string().regex(/^@?[A-Za-z0-9_]{1,32}$/, "Invalid Twitter handle").optional(),
-  telegram: z.string().regex(/^@?[A-Za-z0-9_]{1,32}$/, "Invalid Telegram handle").optional(),
-  wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address"),
-  referred_by_code: z.string().regex(/^[a-z0-9]{4,64}$/i, "Invalid referral code").optional(),
+  twitter: z
+    .string()
+    .regex(/^@?[A-Za-z0-9_]{1,32}$/, "Invalid Twitter handle")
+    .optional(),
+  telegram: z
+    .string()
+    .regex(/^@?[A-Za-z0-9_]{1,32}$/, "Invalid Telegram handle")
+    .optional(),
+  wallet_address: z
+    .string()
+    .regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address"),
+  referred_by_code: z
+    .string()
+    .regex(/^[a-z0-9]{4,64}$/i, "Invalid referral code")
+    .optional(),
 });
 
 const VerificationSchema = z.object({
-  wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address"),
+  wallet_address: z
+    .string()
+    .regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address"),
   twitter_followed: z.boolean().optional(),
   telegram_joined: z.boolean().optional(),
   tweet_verified: z.boolean().optional(),
   tweet_url: z
     .string()
     .url()
-    .refine((v) => /https?:\/\/(x\.com|twitter\.com)\//i.test(v), "Tweet URL must be from Twitter/X")
+    .refine(
+      (v) => /https?:\/\/(x\.com|twitter\.com)\//i.test(v),
+      "Tweet URL must be from Twitter/X",
+    )
     .optional(),
   friends_invited: z.number().min(0).max(10).optional(),
 });
@@ -46,16 +62,18 @@ export const registerUser: RequestHandler = async (req, res) => {
     // Try insert
     const { data: inserted, error: insertError } = await supabase
       .from("vermairdrop_registrations")
-      .insert(
-        [
-          {
-            email: data.email,
-            twitter: data.twitter ? data.twitter.replace(/^@/, "").toLowerCase() : null,
-            telegram: data.telegram ? data.telegram.replace(/^@/, "").toLowerCase() : null,
-            wallet_address: data.wallet_address,
-          },
-        ]
-      )
+      .insert([
+        {
+          email: data.email,
+          twitter: data.twitter
+            ? data.twitter.replace(/^@/, "").toLowerCase()
+            : null,
+          telegram: data.telegram
+            ? data.telegram.replace(/^@/, "").toLowerCase()
+            : null,
+          wallet_address: data.wallet_address,
+        },
+      ])
       .select()
       .single();
 
@@ -84,11 +102,15 @@ export const registerUser: RequestHandler = async (req, res) => {
 
     // Ensure this user has a referral code
     try {
-      const { getOrCreateReferral, trackReferralEvent } = await import("../lib/referrals");
+      const { getOrCreateReferral, trackReferralEvent } = await import(
+        "../lib/referrals"
+      );
       await getOrCreateReferral(inserted.wallet_address);
 
       // If referred_by_code provided, track referral
-      const referred_by_code = (req.body as any).referred_by_code as string | undefined;
+      const referred_by_code = (req.body as any).referred_by_code as
+        | string
+        | undefined;
       if (referred_by_code) {
         await trackReferralEvent(referred_by_code, inserted.wallet_address);
       }
@@ -107,16 +129,24 @@ export const registerUser: RequestHandler = async (req, res) => {
     }
 
     console.error("Registration error:", error);
-    return res.status(500).json({ success: false, error: "Internal server error" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal server error" });
   }
 };
 
 export const getRegistration: RequestHandler = async (req, res) => {
   try {
-    const WalletParam = z.object({ wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address") });
+    const WalletParam = z.object({
+      wallet_address: z
+        .string()
+        .regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address"),
+    });
     const parsed = WalletParam.safeParse(req.params);
     if (!parsed.success) {
-      return res.status(400).json({ success: false, error: "Invalid wallet address" });
+      return res
+        .status(400)
+        .json({ success: false, error: "Invalid wallet address" });
     }
     const { wallet_address } = parsed.data;
 
@@ -128,7 +158,9 @@ export const getRegistration: RequestHandler = async (req, res) => {
 
     if (error) {
       if ((error as any).code === "PGRST116") {
-        return res.status(404).json({ success: false, error: "Registration not found" });
+        return res
+          .status(404)
+          .json({ success: false, error: "Registration not found" });
       }
       throw error;
     }
@@ -136,7 +168,9 @@ export const getRegistration: RequestHandler = async (req, res) => {
     return res.json({ success: true, registration });
   } catch (error) {
     console.error("Get registration error:", error);
-    return res.status(500).json({ success: false, error: "Internal server error" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal server error" });
   }
 };
 
@@ -152,7 +186,9 @@ export const updateVerification: RequestHandler = async (req, res) => {
       .single();
 
     if (fetchError || !currentReg) {
-      return res.status(404).json({ success: false, error: "Registration not found" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Registration not found" });
     }
 
     // Compute overall verification without relying on non-existent columns
@@ -163,7 +199,9 @@ export const updateVerification: RequestHandler = async (req, res) => {
       (data.friends_invited ?? 0) >= 1;
 
     const social_verified = Boolean(currentReg.social_verified) || hasAllFlags;
-    const bonus_eligible = Boolean(social_verified && currentReg.is_verm_holder);
+    const bonus_eligible = Boolean(
+      social_verified && currentReg.is_verm_holder,
+    );
 
     const { data: updatedReg, error: updateError } = await supabase
       .from("vermairdrop_registrations")
@@ -185,7 +223,9 @@ export const updateVerification: RequestHandler = async (req, res) => {
     }
 
     console.error("Verification update error:", error);
-    return res.status(500).json({ success: false, error: "Internal server error" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal server error" });
   }
 };
 
@@ -220,6 +260,8 @@ export const getRegistrationStats: RequestHandler = async (_req, res) => {
     return res.json({ success: true, stats });
   } catch (error) {
     console.error("Stats error:", error);
-    return res.status(500).json({ success: false, error: "Internal server error" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal server error" });
   }
 };

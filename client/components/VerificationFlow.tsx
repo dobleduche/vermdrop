@@ -135,17 +135,23 @@ export const VerificationFlow = ({
             case "twitter-follow":
               return {
                 ...step,
-                completed: (existingRegistration as any).twitter_followed || existingRegistration.social_verified,
+                completed:
+                  (existingRegistration as any).twitter_followed ||
+                  existingRegistration.social_verified,
               } as VerificationStep;
             case "telegram-join":
               return {
                 ...step,
-                completed: (existingRegistration as any).telegram_joined || existingRegistration.social_verified,
+                completed:
+                  (existingRegistration as any).telegram_joined ||
+                  existingRegistration.social_verified,
               } as VerificationStep;
             case "tweet":
               return {
                 ...step,
-                completed: (existingRegistration as any).tweet_verified || existingRegistration.social_verified,
+                completed:
+                  (existingRegistration as any).tweet_verified ||
+                  existingRegistration.social_verified,
               } as VerificationStep;
             case "registration":
               return {
@@ -188,7 +194,9 @@ export const VerificationFlow = ({
         if (response.ok || response.status === 404) {
           setSteps((prev) =>
             prev.map((step) =>
-              step.id === "twitter-follow" ? { ...step, completed: true } : step,
+              step.id === "twitter-follow"
+                ? { ...step, completed: true }
+                : step,
             ),
           );
           if (currentStep === 1) setCurrentStep(2);
