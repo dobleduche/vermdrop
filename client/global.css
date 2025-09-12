@@ -1,9 +1,9 @@
+/* Wallet Adapter CSS */
+@import url("https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-react-ui@0.9.39/styles.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Wallet Adapter CSS */
-@import url("https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-react-ui@0.9.39/styles.css");
 
 @layer base {
   /**
