@@ -8,6 +8,7 @@ const RegistrationSchema = z.object({
   twitter: z.string().optional(),
   telegram: z.string().optional(),
   wallet_address: z.string().min(32, "Invalid wallet address"),
+  referred_by_code: z.string().min(4).optional(),
 });
 
 const VerificationSchema = z.object({
