@@ -208,7 +208,7 @@ export default function Index() {
       <AnimatedBackground />
 
       {/* Sticky Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-cyber-neon/20 bg-cyber-dark/80 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-50 glass-header">
         <div className="container mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -292,7 +292,7 @@ export default function Index() {
           </div>
 
           {/* Token Info Card */}
-          <Card className="mb-8 cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+          <Card className="mb-8 glass-panel">
             <CardHeader>
               <CardTitle className="text-cyber-neon flex items-center">
                 <Zap className="w-6 h-6 mr-2" />
@@ -334,7 +334,7 @@ export default function Index() {
 
           {/* Airdrop Info */}
           {registration?.social_verified && (
-            <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm mb-8">
+            <Card className="glass-panel mb-8">
               <CardHeader>
                 <CardTitle className="text-cyber-green">
                   🎉 Congratulations!
@@ -366,7 +366,7 @@ export default function Index() {
           <div className="mt-16 text-center">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
               {/* Official Links */}
-              <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+              <Card className="glass-panel">
                 <CardHeader>
                   <CardTitle className="text-cyber-neon text-lg">
                     Official Links
@@ -401,7 +401,7 @@ export default function Index() {
               </Card>
 
               {/* Contact Information */}
-              <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+              <Card className="glass-panel">
                 <CardHeader>
                   <CardTitle className="text-cyber-neon text-lg">
                     Support
