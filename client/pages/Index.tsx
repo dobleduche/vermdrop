@@ -326,6 +326,11 @@ export default function Index() {
             />
           </div>
 
+          {/* Referral Share */}
+          <div className="mb-8">
+            {connected && <ReferralShare />}
+          </div>
+
           {/* Airdrop Info */}
           {registration?.social_verified && (
             <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm mb-8">
