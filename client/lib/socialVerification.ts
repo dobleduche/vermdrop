@@ -4,14 +4,13 @@ export const verifyTwitterFollow = async (
   username: string,
 ): Promise<boolean> => {
   try {
-    // Open Twitter profile
-    window.open(`https://twitter.com/nimrevxyz`, "_blank");
+    // Open official X profile (disabled until configured)
 
     // User confirmation process (in production, would use Twitter API)
     return new Promise((resolve) => {
       setTimeout(() => {
         const userConfirms = window.confirm(
-          "Have you followed @nimrevxyz on Twitter?\n\nClick OK if you have followed, or Cancel to try again.",
+          "Have you followed ODINARY on X?\n\nClick OK if you have followed, or Cancel to try again.",
         );
         resolve(userConfirms);
       }, 3000);
@@ -24,14 +23,13 @@ export const verifyTwitterFollow = async (
 
 export const verifyTelegramJoin = async (): Promise<boolean> => {
   try {
-    // Open Telegram group
-    window.open("https://t.me/nimrevxyz", "_blank");
+    // Open Telegram group (disabled until configured)
 
     // User confirmation process (in production, would use Telegram Bot API)
     return new Promise((resolve) => {
       setTimeout(() => {
         const userConfirms = window.confirm(
-          "Have you joined the @nimrevxyz Telegram group?\n\nClick OK if you have joined, or Cancel to try again.",
+          "Have you joined the ODINARY Telegram group?\n\nClick OK if you have joined, or Cancel to try again.",
         );
         resolve(userConfirms);
       }, 3000);
@@ -67,7 +65,7 @@ export const verifyTweet = async (
     // In production, this would:
     // 1. Use Twitter API to fetch tweet content
     // 2. Check if it contains required hashtags
-    // 3. Verify it mentions @nimrevxyz
+    // 3. Verify it mentions ODINARY (brand handle)
     // 4. Check if user invited friends (mentions or retweets)
 
     // Basic hashtag check in URL (in production, would fetch tweet content via API)
@@ -90,7 +88,7 @@ export const verifyTweet = async (
   }
 };
 
-// Helper function to check if wallet holds VERM tokens
+// Helper function to check if wallet holds NARY tokens
 export const checkVermTokenBalance = async (
   walletAddress: string,
 ): Promise<{ hasTokens: boolean; balance: number }> => {
@@ -98,7 +96,7 @@ export const checkVermTokenBalance = async (
     // Production implementation would use Solana RPC:
     // 1. Connect to Solana cluster
     // 2. Get token accounts for wallet
-    // 3. Check VERM token mint balance
+    // 3. Check NARY token mint balance
     // 4. Return actual balance
 
     return {
