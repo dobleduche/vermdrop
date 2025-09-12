@@ -103,7 +103,7 @@ export default function Index() {
     try {
       const verificationData: VerificationRequest = {
         wallet_address: publicKey.toString(),
-        twitter_verified: true,
+        twitter_followed: true,
       };
 
       const response = await fetch("/api/registration/verify", {
@@ -134,7 +134,7 @@ export default function Index() {
     try {
       const verificationData: VerificationRequest = {
         wallet_address: publicKey.toString(),
-        telegram_verified: true,
+        telegram_joined: true,
       };
 
       const response = await fetch("/api/registration/verify", {
