@@ -22,13 +22,19 @@ export default function ReferralShare() {
   useEffect(() => {
     if (!connected || !publicKey) return;
     (async () => {
-      const res = await fetch(`/api/referral/${publicKey.toString()}`);
-      if (res.ok) {
+      try {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), 8000);
+        const res = await fetch(`/api/referral/${publicKey.toString()}`, { signal: controller.signal, headers: { Accept: 'application/json' } });
+        clearTimeout(id);
+        if (!res.ok) return;
         const json: ReferralResponse = await res.json();
         if (json.success && json.info) {
           setReferralCode(json.info.referral_code);
           setTotal(json.info.total_referred);
         }
+      } catch (e) {
+        console.warn('Referral fetch failed', e);
       }
     })();
   }, [connected, publicKey]);
