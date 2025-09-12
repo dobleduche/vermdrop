@@ -276,7 +276,7 @@ export default function Index() {
               </div>
               <div className="flex items-center space-x-2">
                 <Lock className="w-5 h-5 text-cyber-yellow" />
-                <span>50% LP Locked 1 Year</span>
+                <span>100% LP Locked 1 Year</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Users className="w-5 h-5 text-cyber-blue" />
