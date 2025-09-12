@@ -44,6 +44,10 @@ export const AnimatedBackground = () => {
     () => Array.from({ length: 14 }).map((_, i) => i),
     [],
   );
+  const matrixOffsets = useMemo(
+    () => matrixCols.map(() => -20 + Math.random() * 40),
+    [matrixCols],
+  );
   const matrixChars = useMemo(
     () =>
       Array.from({ length: 28 }).map(() => (Math.random() > 0.5 ? "1" : "0")),
@@ -63,6 +67,8 @@ export const AnimatedBackground = () => {
             className="matrix-stream"
             style={{
               left: `${(col + 1) * (100 / (matrixCols.length + 1))}%`,
+              top: `${matrixOffsets[col]}%`,
+              bottom: "-10%",
             }}
           >
             {matrixChars.map((ch, idx) => (
