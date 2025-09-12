@@ -55,6 +55,15 @@ export const VerificationFlow = ({
 }: VerificationFlowProps) => {
   const { publicKey, connected } = useWallet();
   const [currentStep, setCurrentStep] = useState(0);
+  const referredByCode = useMemo(() => {
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const code = sp.get("ref") || undefined;
+      return code && code.trim().length > 0 ? code : undefined;
+    } catch {
+      return undefined;
+    }
+  }, []);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
