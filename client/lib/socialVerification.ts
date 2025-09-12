@@ -90,7 +90,6 @@ export const checkVermTokenBalance = async (walletAddress: string): Promise<{ ha
     // 3. Check VERM token mint balance
     // 4. Return actual balance
 
-    // Placeholder implementation (airdrop hasn't happened yet)
     return {
       hasTokens: false,
       balance: 0

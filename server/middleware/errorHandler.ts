@@ -36,6 +36,26 @@ export class RateLimitError extends Error implements AppError {
   }
 }
 
+const scrubSensitive = (obj: any) => {
+  try {
+    if (!obj || typeof obj !== 'object') return obj;
+    const clone: any = {};
+    for (const [k, v] of Object.entries(obj)) {
+      const key = String(k).toLowerCase();
+      if (['email','telegram','twitter','tweet_url','wallet_address'].includes(key)) {
+        clone[k] = '[redacted]';
+      } else if (key.includes('token') || key.includes('key') || key.includes('secret')) {
+        clone[k] = '[redacted]';
+      } else {
+        clone[k] = v;
+      }
+    }
+    return clone;
+  } catch {
+    return undefined;
+  }
+};
+
 export const errorHandler = (
   err: Error | AppError,
   req: Request,
@@ -50,9 +70,9 @@ export const errorHandler = (
   console.error(`[${new Date().toISOString()}] Error in ${req.method} ${req.path}:`, {
     error: err.message,
     stack: err.stack,
-    body: req.body,
-    params: req.params,
-    query: req.query,
+    body: scrubSensitive(req.body),
+    params: scrubSensitive(req.params),
+    query: scrubSensitive(req.query),
     ip: req.ip,
     userAgent: req.get('User-Agent')
   });

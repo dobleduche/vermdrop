@@ -4,8 +4,10 @@ import { getOrCreateReferral, trackReferralEvent } from "../lib/referrals";
 
 export const getReferralInfo: RequestHandler = async (req, res) => {
   try {
-    const wallet = req.params.wallet as string;
-    if (!wallet) return res.status(400).json({ success: false, error: "Wallet is required" });
+    const Params = z.object({ wallet: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address") });
+    const parsed = Params.safeParse(req.params);
+    if (!parsed.success) return res.status(400).json({ success: false, error: "Invalid wallet address" });
+    const wallet = parsed.data.wallet;
 
     const info = await getOrCreateReferral(wallet);
     return res.json({ success: true, info });

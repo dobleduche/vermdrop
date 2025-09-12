@@ -5,18 +5,22 @@ import { supabase } from "../lib/supabase";
 // Validation schemas
 const RegistrationSchema = z.object({
   email: z.string().email("Invalid email format"),
-  twitter: z.string().optional(),
-  telegram: z.string().optional(),
-  wallet_address: z.string().min(32, "Invalid wallet address"),
-  referred_by_code: z.string().min(4).optional(),
+  twitter: z.string().regex(/^@?[A-Za-z0-9_]{1,32}$/, "Invalid Twitter handle").optional(),
+  telegram: z.string().regex(/^@?[A-Za-z0-9_]{1,32}$/, "Invalid Telegram handle").optional(),
+  wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address"),
+  referred_by_code: z.string().regex(/^[a-z0-9]{4,64}$/i, "Invalid referral code").optional(),
 });
 
 const VerificationSchema = z.object({
-  wallet_address: z.string().min(32, "Invalid wallet address"),
+  wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address"),
   twitter_followed: z.boolean().optional(),
   telegram_joined: z.boolean().optional(),
   tweet_verified: z.boolean().optional(),
-  tweet_url: z.string().url().optional(),
+  tweet_url: z
+    .string()
+    .url()
+    .refine((v) => /https?:\/\/(x\.com|twitter\.com)\//i.test(v), "Tweet URL must be from Twitter/X")
+    .optional(),
   friends_invited: z.number().min(0).max(10).optional(),
 });
 
@@ -46,8 +50,8 @@ export const registerUser: RequestHandler = async (req, res) => {
         [
           {
             email: data.email,
-            twitter: data.twitter ?? null,
-            telegram: data.telegram ?? null,
+            twitter: data.twitter ? data.twitter.replace(/^@/, "").toLowerCase() : null,
+            telegram: data.telegram ? data.telegram.replace(/^@/, "").toLowerCase() : null,
             wallet_address: data.wallet_address,
           },
         ]
@@ -109,11 +113,12 @@ export const registerUser: RequestHandler = async (req, res) => {
 
 export const getRegistration: RequestHandler = async (req, res) => {
   try {
-    const { wallet_address } = req.params as { wallet_address: string };
-
-    if (!wallet_address) {
-      return res.status(400).json({ success: false, error: "Wallet address is required" });
+    const WalletParam = z.object({ wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, "Invalid wallet address") });
+    const parsed = WalletParam.safeParse(req.params);
+    if (!parsed.success) {
+      return res.status(400).json({ success: false, error: "Invalid wallet address" });
     }
+    const { wallet_address } = parsed.data;
 
     const { data: registration, error } = await supabase
       .from("vermairdrop_registrations")
