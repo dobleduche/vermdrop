@@ -13,9 +13,8 @@ export const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    // Calculate target date (55 days from today)
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 55);
+    // Calculate target date (85 days and 12 hours from now)
+    const targetDate = new Date(Date.now() + ((85 * 24 + 12) * 60 * 60 * 1000));
 
     const calculateTimeLeft = () => {
       const now = new Date().getTime();
