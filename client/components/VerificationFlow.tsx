@@ -87,7 +87,7 @@ export const VerificationFlow = ({
     },
     {
       id: "twitter-follow",
-      title: "Follow ODINARY on X",
+      title: "Follow @odinarysol on X",
       description: "Follow our official X account",
       completed: false,
       required: true,
@@ -95,7 +95,7 @@ export const VerificationFlow = ({
     {
       id: "telegram-join",
       title: "Join Telegram",
-      description: "Join our official Telegram group",
+      description: "Join our Telegram group @odinarychat",
       completed: false,
       required: true,
     },
@@ -175,7 +175,7 @@ export const VerificationFlow = ({
     setError("");
 
     try {
-      const isFollowing = await verifyTwitterFollow("ODINARY");
+      const isFollowing = await verifyTwitterFollow("odinarysol");
 
       if (isFollowing) {
         const verificationData: VerificationRequest = {
@@ -204,7 +204,7 @@ export const VerificationFlow = ({
           setError("Failed to verify Twitter follow. Please try again.");
         }
       } else {
-        setError("Please follow ODINARY on X and try again.");
+        setError("Please follow @odinarysol on X and try again.");
       }
     } catch (error) {
       setError("Error verifying Twitter follow. Please try again.");
@@ -245,7 +245,7 @@ export const VerificationFlow = ({
           setError("Failed to verify Telegram join. Please try again.");
         }
       } else {
-        setError("Please join the ODINARY Telegram group and try again.");
+        setError("Please join the @odinarychat Telegram group and try again.");
       }
     } catch (error) {
       setError("Error verifying Telegram join. Please try again.");
