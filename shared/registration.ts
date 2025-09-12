@@ -9,10 +9,6 @@ export interface Registration {
   verm_balance: number;
   bonus_eligible: boolean;
   social_verified: boolean;
-  twitter_followed: boolean;
-  telegram_joined: boolean;
-  tweet_verified: boolean;
-  friends_invited: number;
 }
 
 export interface RegistrationRequest {
@@ -20,6 +16,7 @@ export interface RegistrationRequest {
   twitter?: string;
   telegram?: string;
   wallet_address: string;
+  referred_by_code?: string;
 }
 
 export interface VerificationRequest {
@@ -33,7 +30,7 @@ export interface VerificationRequest {
 
 export interface RegistrationResponse {
   success: boolean;
-  registration?: Registration;
+  registration?: Registration & { referral_code?: string };
   error?: string;
   details?: any;
 }
@@ -48,5 +45,16 @@ export interface RegistrationStats {
 export interface StatsResponse {
   success: boolean;
   stats?: RegistrationStats;
+  error?: string;
+}
+
+export interface ReferralInfo {
+  referral_code: string;
+  total_referred: number;
+}
+
+export interface ReferralResponse {
+  success: boolean;
+  info?: ReferralInfo;
   error?: string;
 }
