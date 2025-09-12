@@ -99,7 +99,7 @@ export const CountdownTimer = () => {
 
         <div className="mt-6 text-center">
           <div className="text-2xl md:text-3xl font-bold text-cyber-neon mb-2">
-            1,000,000 VERM
+            1,000,000 NARY
           </div>
           <div className="text-cyber-light/80">Total Airdrop Pool</div>
         </div>
