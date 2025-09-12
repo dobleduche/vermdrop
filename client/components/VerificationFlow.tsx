@@ -405,7 +405,7 @@ Get your tokens: ${window.location.href}`;
 
   if (existingRegistration?.social_verified) {
     return (
-      <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+      <Card className="glass-panel">
         <CardHeader>
           <CardTitle className="text-cyber-green flex items-center">
             <CheckCircle2 className="w-6 h-6 mr-2" />
@@ -430,7 +430,7 @@ Get your tokens: ${window.location.href}`;
   return (
     <div className="space-y-6">
       {/* Progress Bar */}
-      <Card className="cyber-border bg-cyber-dark/50 backdrop-blur-sm">
+      <Card className="glass-panel">
         <CardHeader>
           <CardTitle className="text-cyber-neon">
             Verification Progress
@@ -454,7 +454,7 @@ Get your tokens: ${window.location.href}`;
 
       {/* Step 1 & 2: Social Media Verification */}
       <Card
-        className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 0 || currentStep === 1 ? "ring-2 ring-cyber-neon" : ""}`}
+        className={`glass-panel ${currentStep === 0 || currentStep === 1 ? "ring-2 ring-cyber-neon/40" : ""}`}
       >
         <CardHeader>
           <CardTitle className="text-cyber-neon">
@@ -550,7 +550,7 @@ Get your tokens: ${window.location.href}`;
 
       {/* Step 3: Tweet Verification */}
       <Card
-        className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 2 ? "ring-2 ring-cyber-neon" : ""}`}
+        className={`glass-panel ${currentStep === 2 ? "ring-2 ring-cyber-neon/40" : ""}`}
       >
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -643,7 +643,7 @@ Get your tokens: ${window.location.href}`;
 
       {/* Step 4: Final Registration */}
       <Card
-        className={`cyber-border bg-cyber-dark/50 backdrop-blur-sm ${currentStep === 3 ? "ring-2 ring-cyber-neon" : ""}`}
+        className={`glass-panel ${currentStep === 3 ? "ring-2 ring-cyber-neon/40" : ""}`}
       >
         <CardHeader>
           <CardTitle className="flex items-center">
