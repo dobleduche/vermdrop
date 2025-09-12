@@ -126,23 +126,23 @@ export const VerificationFlow = ({
             case "twitter-follow":
               return {
                 ...step,
-                completed: existingRegistration.twitter_followed,
-              };
+                completed: (existingRegistration as any).twitter_followed || existingRegistration.social_verified,
+              } as VerificationStep;
             case "telegram-join":
               return {
                 ...step,
-                completed: existingRegistration.telegram_joined,
-              };
+                completed: (existingRegistration as any).telegram_joined || existingRegistration.social_verified,
+              } as VerificationStep;
             case "tweet":
               return {
                 ...step,
-                completed: existingRegistration.tweet_verified,
-              };
+                completed: (existingRegistration as any).tweet_verified || existingRegistration.social_verified,
+              } as VerificationStep;
             case "registration":
               return {
                 ...step,
                 completed: existingRegistration.social_verified,
-              };
+              } as VerificationStep;
             default:
               return step;
           }
@@ -160,11 +160,9 @@ export const VerificationFlow = ({
     setError("");
 
     try {
-      // Use real verification function
       const isFollowing = await verifyTwitterFollow("nimrevxyz");
 
       if (isFollowing) {
-        // Update verification status via API
         const verificationData: VerificationRequest = {
           wallet_address: publicKey.toString(),
           twitter_followed: true,
@@ -178,12 +176,10 @@ export const VerificationFlow = ({
           body: JSON.stringify(verificationData),
         });
 
-        if (response.ok) {
+        if (response.ok || response.status === 404) {
           setSteps((prev) =>
             prev.map((step) =>
-              step.id === "twitter-follow"
-                ? { ...step, completed: true }
-                : step,
+              step.id === "twitter-follow" ? { ...step, completed: true } : step,
             ),
           );
           if (currentStep === 1) setCurrentStep(2);
@@ -205,11 +201,9 @@ export const VerificationFlow = ({
     setError("");
 
     try {
-      // Use real verification function
       const hasJoined = await verifyTelegramJoin();
 
       if (hasJoined) {
-        // Update verification status via API
         const verificationData: VerificationRequest = {
           wallet_address: publicKey.toString(),
           telegram_joined: true,
@@ -223,7 +217,7 @@ export const VerificationFlow = ({
           body: JSON.stringify(verificationData),
         });
 
-        if (response.ok) {
+        if (response.ok || response.status === 404) {
           setSteps((prev) =>
             prev.map((step) =>
               step.id === "telegram-join" ? { ...step, completed: true } : step,
@@ -266,7 +260,6 @@ Get your tokens: ${window.location.href}`;
     setError("");
 
     try {
-      // Use real tweet verification
       const requiredHashtags = ["#NimRev", "#VERM", "#GridSecurity"];
       const isTweetValid = await verifyTweet(
         formData.tweetUrl,
@@ -274,7 +267,6 @@ Get your tokens: ${window.location.href}`;
       );
 
       if (isTweetValid) {
-        // Update verification status via API
         const verificationData: VerificationRequest = {
           wallet_address: publicKey.toString(),
           tweet_verified: true,
@@ -290,7 +282,7 @@ Get your tokens: ${window.location.href}`;
           body: JSON.stringify(verificationData),
         });
 
-        if (response.ok) {
+        if (response.ok || response.status === 404) {
           setSteps((prev) =>
             prev.map((step) =>
               step.id === "tweet" ? { ...step, completed: true } : step,
@@ -353,6 +345,30 @@ Get your tokens: ${window.location.href}`;
       const result: RegistrationResponse = await response.json();
 
       if (result.success && result.registration) {
+        // Persist combined verification flags now that registration exists
+        const finalVerification: VerificationRequest = {
+          wallet_address: publicKey.toString(),
+          twitter_followed: steps[1].completed,
+          telegram_joined: steps[2].completed,
+          tweet_verified: steps[3].completed,
+          tweet_url: formData.tweetUrl || undefined,
+          friends_invited: formData.friendsInvited,
+        };
+
+        const verifyRes = await fetch("/api/registration/verify", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(finalVerification),
+        });
+
+        let finalRegistration = result.registration;
+        if (verifyRes.ok) {
+          const verifyJson: RegistrationResponse = await verifyRes.json();
+          if (verifyJson.success && verifyJson.registration) {
+            finalRegistration = verifyJson.registration;
+          }
+        }
+
         // Update final step
         setSteps((prev) =>
           prev.map((step) =>
@@ -360,7 +376,7 @@ Get your tokens: ${window.location.href}`;
           ),
         );
 
-        onComplete(result.registration);
+        onComplete(finalRegistration);
       } else {
         setError(result.error || "Registration failed");
       }
