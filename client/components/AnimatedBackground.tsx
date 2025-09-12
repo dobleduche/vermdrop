@@ -10,6 +10,12 @@ interface FallingObject {
 
 export const AnimatedBackground = () => {
   const [fallingObjects, setFallingObjects] = useState<FallingObject[]>([]);
+  const [headerOffset, setHeaderOffset] = useState<number>(80);
+
+  useEffect(() => {
+    const h = document.querySelector("header");
+    if (h) setHeaderOffset((h as HTMLElement).offsetHeight);
+  }, []);
 
   useEffect(() => {
     const objects: FallingObject[] = [];
@@ -45,7 +51,7 @@ export const AnimatedBackground = () => {
     [],
   );
   const matrixOffsets = useMemo(
-    () => matrixCols.map(() => -20 + Math.random() * 40),
+    () => matrixCols.map(() => 20 + Math.random() * 60),
     [matrixCols],
   );
   const matrixChars = useMemo(
@@ -60,13 +66,13 @@ export const AnimatedBackground = () => {
       <div className="absolute inset-0 cyber-grid opacity-20"></div>
 
       {/* Subtle Matrix Code Overlay */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
         {matrixCols.map((col) => (
           <div
             key={`mcol-${col}`}
             className="matrix-stream"
             style={{
-              left: `${(col + 1) * (100 / (matrixCols.length + 1))}%`,
+              left: `${Math.random() * 100}%`,
               top: `${matrixOffsets[col]}%`,
               bottom: "-10%",
             }}
@@ -102,7 +108,7 @@ export const AnimatedBackground = () => {
       </div>
 
       {/* Falling Objects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
         {fallingObjects.map((obj) => (
           <div
             key={obj.id}
@@ -128,7 +134,7 @@ export const AnimatedBackground = () => {
       </div>
 
       {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
         {Array.from({ length: 30 }).map((_, i) => (
           <div
             key={`particle-${i}`}
@@ -145,7 +151,7 @@ export const AnimatedBackground = () => {
       </div>
 
       {/* Energy Waves */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={`wave-${i}`}
