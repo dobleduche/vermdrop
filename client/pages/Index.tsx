@@ -213,14 +213,10 @@ export default function Index() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F29ccaf1d7d264cd2bd339333fe296f0c%2F4ecd21b2dfb64ce481313888fb98d440?format=webp&width=80"
-                alt="NimRev Logo"
-                className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-              />
-              <h1 className="text-lg sm:text-2xl font-bold neon-text text-cyber-neon title-3d">
-                $VERM
+              <h1 className="text-lg sm:text-2xl font-bold neon-text text-cyber-neon title-3d tracking-widest">
+                ODINARY
               </h1>
+              <span className="text-cyber-light/70 text-xs sm:text-sm">$NARY</span>
             </div>
 
             {/* Network & Wallet */}
@@ -264,7 +260,7 @@ export default function Index() {
             </div>
 
             <h1 className="text-6xl md:text-8xl title-3d mb-6 bg-gradient-to-r from-cyber-pink via-cyber-blue to-cyber-green bg-clip-text text-transparent">
-              $VERM AIRDROP
+              NARY AIRDROP
             </h1>
             <p className="text-xl md:text-2xl text-cyber-light/80 mb-8">
               Join the revolution. Claim your share of the future.
@@ -273,7 +269,7 @@ export default function Index() {
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center space-x-2">
                 <Shield className="w-5 h-5 text-cyber-green" />
-                <span>Total Supply: 1,000,000,000 VERM</span>
+                <span>Total Supply: 1,000,000,000 NARY</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Lock className="w-5 h-5 text-cyber-yellow" />
@@ -302,11 +298,9 @@ export default function Index() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-cyber-light/60">
-                    Contract Address
-                  </p>
-                  <p className="font-mono text-sm bg-cyber-darker p-2 rounded border border-cyber-neon/20">
-                    Auu4U7cVjm41yVnVtBCwHW2FBAKznPgLR7hQf4Esjups
+                  <p className="text-sm text-cyber-light/60">Contract Address</p>
+                  <p className="font-mono text-sm bg-cyber-darker p-2 rounded border border-cyber-neon/20 break-all">
+                    8CkSBAyKjshGwJFrctWAq74EUFwpyd49uVqchpUgbonk
                   </p>
                 </div>
                 <div>
@@ -338,7 +332,7 @@ export default function Index() {
                   🎉 Congratulations!
                 </CardTitle>
                 <CardDescription className="text-cyber-light/60">
-                  You're eligible for the $VERM airdrop
+                  You're eligible for the NARY airdrop
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
@@ -349,7 +343,7 @@ export default function Index() {
                   1,000,000
                 </div>
                 <div className="text-xl text-cyber-light/80 mb-4">
-                  VERM Tokens Reserved
+                  NARY Tokens Reserved
                 </div>
                 <div className="space-y-2 text-sm text-cyber-light/60">
                   <p>✅ All verification steps completed</p>
@@ -360,69 +354,6 @@ export default function Index() {
             </Card>
           )}
 
-          {/* Official Links & Contact */}
-          <div className="mt-16 text-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-              {/* Official Links */}
-              <Card className="glass-panel">
-                <CardHeader>
-                  <CardTitle className="text-cyber-neon text-lg">
-                    Official Links
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <a
-                    href="https://nimrev.xyz"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-full p-3 rounded-lg bg-cyber-darker border border-cyber-neon/20 hover:border-cyber-neon/40 hover:bg-cyber-darker/80 transition-all group"
-                  >
-                    <Globe className="w-5 h-5 mr-2 text-cyber-blue" />
-                    <span className="text-cyber-light group-hover:text-cyber-neon">
-                      NimRev.xyz
-                    </span>
-                    <ExternalLink className="w-4 h-4 ml-2 text-cyber-light/60" />
-                  </a>
-                  <a
-                    href="https://nimrev.xyz/docs"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-full p-3 rounded-lg bg-cyber-darker border border-cyber-neon/20 hover:border-cyber-neon/40 hover:bg-cyber-darker/80 transition-all group"
-                  >
-                    <Shield className="w-5 h-5 mr-2 text-cyber-green" />
-                    <span className="text-cyber-light group-hover:text-cyber-neon">
-                      Documentation
-                    </span>
-                    <ExternalLink className="w-4 h-4 ml-2 text-cyber-light/60" />
-                  </a>
-                </CardContent>
-              </Card>
-
-              {/* Contact Information */}
-              <Card className="glass-panel">
-                <CardHeader>
-                  <CardTitle className="text-cyber-neon text-lg">
-                    Support
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <a
-                    href="mailto:support@nimrev.xyz"
-                    className="flex items-center justify-center w-full p-3 rounded-lg bg-cyber-darker border border-cyber-neon/20 hover:border-cyber-neon/40 hover:bg-cyber-darker/80 transition-all group"
-                  >
-                    <Mail className="w-5 h-5 mr-2 text-cyber-pink" />
-                    <span className="text-cyber-light group-hover:text-cyber-neon">
-                      support@nimrev.xyz
-                    </span>
-                  </a>
-                  <div className="text-center text-cyber-light/60 text-sm">
-                    <p className="mb-2">Blockchain Security & Intelligence</p>
-                    <p>Built on Solana • Secured by Innovation</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
         </div>
       </main>
     </div>
