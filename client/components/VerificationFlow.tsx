@@ -255,7 +255,7 @@ export const VerificationFlow = ({
 
   const generateTweetText = () => {
     const hashtags = ["#ODINARY", "#NARY", "#Memeverse"];
-    const text = `🚀 Excited to join the $VERM airdrop! Revolutionary blockchain security project by @nimrevxyz! ${hashtags.join(" ")} 
+    const text = `🚀 Excited to join the NARY airdrop on ODINARY! ${hashtags.join(" ")} 
 
 Get your tokens: ${window.location.href}`;
     return encodeURIComponent(text);
