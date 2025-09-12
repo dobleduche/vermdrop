@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { WalletButton } from "@/components/WalletButton";
 import { VerificationFlow } from "@/components/VerificationFlow";
+import ReferralShare from "@/components/ReferralShare";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import {
