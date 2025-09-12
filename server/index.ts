@@ -85,6 +85,19 @@ export function createServer() {
     asyncHandler(getRegistrationStats),
   );
 
+  // Referral endpoints
+  const { getReferralInfo, trackReferral } = require("./routes/referrals");
+  app.get(
+    "/referral/:wallet",
+    generalLimiter.middleware(),
+    asyncHandler(getReferralInfo),
+  );
+  app.post(
+    "/referral/track",
+    generalLimiter.middleware(),
+    asyncHandler(trackReferral),
+  );
+
   // Error handlers (must be last)
   app.use(notFoundHandler);
   app.use(errorHandler);
