@@ -86,7 +86,6 @@ export function createServer() {
   );
 
   // Referral endpoints
-  const { getReferralInfo, trackReferral } = require("./routes/referrals");
   app.get(
     "/referral/:wallet",
     generalLimiter.middleware(),
