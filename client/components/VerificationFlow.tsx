@@ -341,6 +341,7 @@ Get your tokens: ${window.location.href}`;
         twitter: formData.twitter || undefined,
         telegram: formData.telegram || undefined,
         wallet_address: publicKey.toString(),
+        referred_by_code: referredByCode,
       };
 
       const response = await fetch("/api/registration", {
