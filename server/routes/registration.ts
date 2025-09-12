@@ -59,12 +59,33 @@ export const registerUser: RequestHandler = async (req, res) => {
   try {
     const data = RegistrationSchema.parse(req.body);
 
+    // Normalize inputs
+    const normalizedEmail = data.email.trim().toLowerCase();
+
+    // Preflight duplicate checks
+    const { data: existingWallet } = await supabase
+      .from("vermairdrop_registrations")
+      .select("*")
+      .eq("wallet_address", data.wallet_address)
+      .single();
+    if (existingWallet) {
+      return res.status(409).json({ success: false, error: "Wallet address already registered", registration: existingWallet });
+    }
+    const { data: existingEmail } = await supabase
+      .from("vermairdrop_registrations")
+      .select("*")
+      .ilike("email", normalizedEmail)
+      .maybeSingle?.() ?? { data: null } as any;
+    if (existingEmail) {
+      return res.status(409).json({ success: false, error: "Email already registered", registration: existingEmail });
+    }
+
     // Try insert
     const { data: inserted, error: insertError } = await supabase
       .from("vermairdrop_registrations")
       .insert([
         {
-          email: data.email,
+          email: normalizedEmail,
           twitter: data.twitter
             ? data.twitter.replace(/^@/, "").toLowerCase()
             : null,
@@ -84,16 +105,28 @@ export const registerUser: RequestHandler = async (req, res) => {
         (insertError as any)?.code === "23505" ||
         /duplicate key/i.test((insertError as any)?.message || "")
       ) {
-        const { data: existing } = await supabase
+        // Determine conflict field
+        const { data: existingByWallet } = await supabase
           .from("vermairdrop_registrations")
           .select("*")
           .eq("wallet_address", data.wallet_address)
           .single();
-
+        if (existingByWallet) {
+          return res.status(409).json({
+            success: false,
+            error: "Wallet address already registered",
+            registration: existingByWallet,
+          });
+        }
+        const { data: existingByEmail } = await supabase
+          .from("vermairdrop_registrations")
+          .select("*")
+          .ilike("email", normalizedEmail)
+          .maybeSingle?.() ?? { data: null } as any;
         return res.status(409).json({
           success: false,
-          error: "Wallet address already registered",
-          registration: existing ?? undefined,
+          error: existingByEmail ? "Email already registered" : "Already registered",
+          registration: existingByEmail ?? undefined,
         });
       }
 
