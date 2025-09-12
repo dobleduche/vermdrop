@@ -578,7 +578,8 @@ Get your tokens: ${window.location.href}`;
               <Alert className="border-cyber-neon/20 bg-cyber-darker/50">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription className="text-cyber-light/80">
-                  <strong>Requirements:</strong> Use hashtags #ODINARY #NARY #Memeverse and invite 1-3 friends
+                  <strong>Requirements:</strong> Use hashtags #ODINARY #NARY
+                  #Memeverse and invite 1-3 friends
                 </AlertDescription>
               </Alert>
 

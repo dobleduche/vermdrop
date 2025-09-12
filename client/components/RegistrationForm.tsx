@@ -1,43 +1,56 @@
-import { useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, Mail, Twitter, Send, Loader2 } from 'lucide-react';
-import { Registration, RegistrationRequest, RegistrationResponse } from '@shared/registration';
+import { useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2, Mail, Twitter, Send, Loader2 } from "lucide-react";
+import {
+  Registration,
+  RegistrationRequest,
+  RegistrationResponse,
+} from "@shared/registration";
 
 interface RegistrationFormProps {
   onRegistrationComplete: (registration: Registration) => void;
   existingRegistration?: Registration;
 }
 
-export const RegistrationForm = ({ onRegistrationComplete, existingRegistration }: RegistrationFormProps) => {
+export const RegistrationForm = ({
+  onRegistrationComplete,
+  existingRegistration,
+}: RegistrationFormProps) => {
   const { publicKey, connected } = useWallet();
   const [formData, setFormData] = useState({
-    email: existingRegistration?.email || '',
-    twitter: existingRegistration?.twitter || '',
-    telegram: existingRegistration?.telegram || '',
+    email: existingRegistration?.email || "",
+    twitter: existingRegistration?.twitter || "",
+    telegram: existingRegistration?.telegram || "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!connected || !publicKey) {
-      setError('Please connect your wallet first');
+      setError("Please connect your wallet first");
       return;
     }
 
     if (!formData.email) {
-      setError('Email is required');
+      setError("Email is required");
       return;
     }
 
     setIsSubmitting(true);
-    setError('');
+    setError("");
 
     try {
       const registrationData: RegistrationRequest = {
@@ -47,10 +60,10 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
         wallet_address: publicKey.toString(),
       };
 
-      const response = await fetch('/api/registration', {
-        method: 'POST',
+      const response = await fetch("/api/registration", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(registrationData),
       });
@@ -60,11 +73,11 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
       if (result.success && result.registration) {
         onRegistrationComplete(result.registration);
       } else {
-        setError(result.error || 'Registration failed');
+        setError(result.error || "Registration failed");
       }
     } catch (err) {
-      setError('Network error. Please try again.');
-      console.error('Registration error:', err);
+      setError("Network error. Please try again.");
+      console.error("Registration error:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -91,23 +104,37 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
             {existingRegistration.twitter && (
               <div>
                 <Label className="text-cyber-light/60">Twitter</Label>
-                <p className="text-cyber-light">@{existingRegistration.twitter}</p>
+                <p className="text-cyber-light">
+                  @{existingRegistration.twitter}
+                </p>
               </div>
             )}
             {existingRegistration.telegram && (
               <div>
                 <Label className="text-cyber-light/60">Telegram</Label>
-                <p className="text-cyber-light">@{existingRegistration.telegram}</p>
+                <p className="text-cyber-light">
+                  @{existingRegistration.telegram}
+                </p>
               </div>
             )}
             <div>
               <Label className="text-cyber-light/60">Status</Label>
               <div className="flex space-x-2 mt-1">
-                <Badge 
-                  variant={existingRegistration.social_verified ? "default" : "secondary"}
-                  className={existingRegistration.social_verified ? "bg-cyber-green/20 border-cyber-green text-cyber-green" : ""}
+                <Badge
+                  variant={
+                    existingRegistration.social_verified
+                      ? "default"
+                      : "secondary"
+                  }
+                  className={
+                    existingRegistration.social_verified
+                      ? "bg-cyber-green/20 border-cyber-green text-cyber-green"
+                      : ""
+                  }
                 >
-                  {existingRegistration.social_verified ? 'Verified' : 'Pending Verification'}
+                  {existingRegistration.social_verified
+                    ? "Verified"
+                    : "Pending Verification"}
                 </Badge>
               </div>
             </div>
@@ -138,7 +165,9 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
                 type="email"
                 placeholder="your@email.com"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 className="pl-10 bg-cyber-darker border-cyber-neon/20 text-cyber-light"
                 required
               />
@@ -156,7 +185,9 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
                 type="text"
                 placeholder="your_handle"
                 value={formData.twitter}
-                onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, twitter: e.target.value })
+                }
                 className="pl-10 bg-cyber-darker border-cyber-neon/20 text-cyber-light"
               />
             </div>
@@ -173,7 +204,9 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
                 type="text"
                 placeholder="your_handle"
                 value={formData.telegram}
-                onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, telegram: e.target.value })
+                }
                 className="pl-10 bg-cyber-darker border-cyber-neon/20 text-cyber-light"
               />
             </div>
@@ -196,7 +229,7 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
                 Registering...
               </>
             ) : (
-              'Register for Airdrop'
+              "Register for Airdrop"
             )}
           </Button>
 

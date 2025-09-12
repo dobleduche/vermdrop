@@ -216,7 +216,9 @@ export default function Index() {
               <h1 className="text-lg sm:text-2xl font-bold neon-text text-cyber-neon title-3d tracking-widest">
                 ODINARY
               </h1>
-              <span className="text-cyber-light/70 text-xs sm:text-sm">$NARY</span>
+              <span className="text-cyber-light/70 text-xs sm:text-sm">
+                $NARY
+              </span>
             </div>
 
             {/* Network & Wallet */}
@@ -298,7 +300,9 @@ export default function Index() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-cyber-light/60">Contract Address</p>
+                  <p className="text-sm text-cyber-light/60">
+                    Contract Address
+                  </p>
                   <p className="font-mono text-sm bg-cyber-darker p-2 rounded border border-cyber-neon/20 break-all">
                     8CkSBAyKjshGwJFrctWAq74EUFwpyd49uVqchpUgbonk
                   </p>
@@ -353,7 +357,6 @@ export default function Index() {
               </CardContent>
             </Card>
           )}
-
         </div>
       </main>
     </div>
