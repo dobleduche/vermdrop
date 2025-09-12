@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { z } from "zod";
+import { supabase } from "../lib/supabase";
 
 // Validation schemas
 const RegistrationSchema = z.object({
@@ -30,105 +31,92 @@ export interface Registration {
   verm_balance: number;
   bonus_eligible: boolean;
   social_verified: boolean;
-  twitter_followed: boolean;
-  telegram_joined: boolean;
-  tweet_verified: boolean;
-  friends_invited: number;
 }
 
-import { supabase } from '../lib/supabase';
-
-// Real database integration with Supabase
-
+// Create or return conflict if wallet already registered
 export const registerUser: RequestHandler = async (req, res) => {
   try {
     const data = RegistrationSchema.parse(req.body);
 
-    // Check if wallet already registered
-    const existingRegistration = registrations.find(
-      reg => reg.wallet_address === data.wallet_address
-    );
+    // Try insert
+    const { data: inserted, error: insertError } = await supabase
+      .from("vermairdrop_registrations")
+      .insert(
+        [
+          {
+            email: data.email,
+            twitter: data.twitter ?? null,
+            telegram: data.telegram ?? null,
+            wallet_address: data.wallet_address,
+          },
+        ]
+      )
+      .select()
+      .single();
 
-    if (existingRegistration) {
-      return res.status(409).json({
-        error: "Wallet address already registered",
-        registration: existingRegistration
-      });
+    if (insertError) {
+      // If duplicate wallet, return existing registration
+      if (
+        // PostgREST unique_violation
+        (insertError as any)?.code === "23505" ||
+        /duplicate key/i.test((insertError as any)?.message || "")
+      ) {
+        const { data: existing } = await supabase
+          .from("vermairdrop_registrations")
+          .select("*")
+          .eq("wallet_address", data.wallet_address)
+          .single();
+
+        return res.status(409).json({
+          success: false,
+          error: "Wallet address already registered",
+          registration: existing ?? undefined,
+        });
+      }
+
+      throw insertError;
     }
 
-    // Create new registration
-    const newRegistration: Registration = {
-      id: nextId++,
-      timestamp: new Date().toISOString(),
-      email: data.email,
-      twitter: data.twitter,
-      telegram: data.telegram,
-      wallet_address: data.wallet_address,
-      is_verm_holder: false,
-      verm_balance: 0,
-      bonus_eligible: false,
-      social_verified: false,
-      twitter_followed: false,
-      telegram_joined: false,
-      tweet_verified: false,
-      friends_invited: 0,
-    };
-
-    registrations.push(newRegistration);
-
-    res.status(201).json({
-      success: true,
-      registration: newRegistration
-    });
+    return res.status(201).json({ success: true, registration: inserted });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
+        success: false,
         error: "Validation failed",
-        details: error.errors
+        details: error.errors,
       });
     }
 
     console.error("Registration error:", error);
-    res.status(500).json({
-      error: "Internal server error"
-    });
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
 export const getRegistration: RequestHandler = async (req, res) => {
   try {
-    const { wallet_address } = req.params;
+    const { wallet_address } = req.params as { wallet_address: string };
 
     if (!wallet_address) {
-      return res.status(400).json({
-        error: "Wallet address is required"
-      });
+      return res.status(400).json({ success: false, error: "Wallet address is required" });
     }
 
     const { data: registration, error } = await supabase
-      .from('vermairdrop_registrations')
-      .select('*')
-      .eq('wallet_address', wallet_address)
+      .from("vermairdrop_registrations")
+      .select("*")
+      .eq("wallet_address", wallet_address)
       .single();
 
     if (error) {
-      if (error.code === 'PGRST116') {
-        return res.status(404).json({
-          error: "Registration not found"
-        });
+      if ((error as any).code === "PGRST116") {
+        return res.status(404).json({ success: false, error: "Registration not found" });
       }
       throw error;
     }
 
-    res.json({
-      success: true,
-      registration
-    });
+    return res.json({ success: true, registration });
   } catch (error) {
     console.error("Get registration error:", error);
-    res.status(500).json({
-      error: "Internal server error"
-    });
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
@@ -136,101 +124,82 @@ export const updateVerification: RequestHandler = async (req, res) => {
   try {
     const data = VerificationSchema.parse(req.body);
 
-    // Build update object
-    const updateData: any = {};
-
-    if (data.twitter_followed !== undefined) {
-      updateData.twitter_followed = data.twitter_followed;
-    }
-
-    if (data.telegram_joined !== undefined) {
-      updateData.telegram_joined = data.telegram_joined;
-    }
-
-    if (data.tweet_verified !== undefined) {
-      updateData.tweet_verified = data.tweet_verified;
-    }
-
-    if (data.tweet_url !== undefined) {
-      updateData.tweet_url = data.tweet_url;
-    }
-
-    if (data.friends_invited !== undefined) {
-      updateData.friends_invited = data.friends_invited;
-    }
-
-    // First get current registration
+    // Get current registration (must exist to persist)
     const { data: currentReg, error: fetchError } = await supabase
-      .from('vermairdrop_registrations')
-      .select('*')
-      .eq('wallet_address', data.wallet_address)
+      .from("vermairdrop_registrations")
+      .select("*")
+      .eq("wallet_address", data.wallet_address)
       .single();
 
-    if (fetchError) {
-      return res.status(404).json({
-        error: "Registration not found"
-      });
+    if (fetchError || !currentReg) {
+      return res.status(404).json({ success: false, error: "Registration not found" });
     }
 
-    // Calculate overall verification status
-    const merged = { ...currentReg, ...updateData };
-    updateData.social_verified =
-      merged.twitter_followed &&
-      merged.telegram_joined &&
-      merged.tweet_verified &&
-      merged.friends_invited >= 1;
+    // Compute overall verification without relying on non-existent columns
+    const hasAllFlags =
+      data.twitter_followed === true &&
+      data.telegram_joined === true &&
+      data.tweet_verified === true &&
+      (data.friends_invited ?? 0) >= 1;
 
-    // Update bonus eligibility
-    updateData.bonus_eligible = updateData.social_verified && merged.is_verm_holder;
+    const social_verified = Boolean(currentReg.social_verified) || hasAllFlags;
+    const bonus_eligible = Boolean(social_verified && currentReg.is_verm_holder);
 
-    // Update in Supabase
     const { data: updatedReg, error: updateError } = await supabase
-      .from('vermairdrop_registrations')
-      .update(updateData)
-      .eq('wallet_address', data.wallet_address)
+      .from("vermairdrop_registrations")
+      .update({ social_verified, bonus_eligible })
+      .eq("wallet_address", data.wallet_address)
       .select()
       .single();
 
-    if (updateError) {
-      throw updateError;
-    }
+    if (updateError) throw updateError;
 
-    res.json({
-      success: true,
-      registration: updatedReg
-    });
+    return res.json({ success: true, registration: updatedReg });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
+        success: false,
         error: "Validation failed",
-        details: error.errors
+        details: error.errors,
       });
     }
 
     console.error("Verification update error:", error);
-    res.status(500).json({
-      error: "Internal server error"
-    });
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
-export const getRegistrationStats: RequestHandler = async (req, res) => {
+export const getRegistrationStats: RequestHandler = async (_req, res) => {
   try {
+    const totalQuery = await supabase
+      .from("vermairdrop_registrations")
+      .select("id", { count: "exact", head: true });
+
+    const verifiedQuery = await supabase
+      .from("vermairdrop_registrations")
+      .select("id", { count: "exact", head: true })
+      .eq("social_verified", true);
+
+    const holdersQuery = await supabase
+      .from("vermairdrop_registrations")
+      .select("id", { count: "exact", head: true })
+      .eq("is_verm_holder", true);
+
+    const bonusQuery = await supabase
+      .from("vermairdrop_registrations")
+      .select("id", { count: "exact", head: true })
+      .eq("bonus_eligible", true);
+
     const stats = {
-      total_registrations: registrations.length,
-      verified_users: registrations.filter(reg => reg.social_verified).length,
-      verm_holders: registrations.filter(reg => reg.is_verm_holder).length,
-      bonus_eligible: registrations.filter(reg => reg.bonus_eligible).length,
+      total_registrations: totalQuery.count ?? 0,
+      verified_users: verifiedQuery.count ?? 0,
+      verm_holders: holdersQuery.count ?? 0,
+      bonus_eligible: bonusQuery.count ?? 0,
     };
-    
-    res.json({
-      success: true,
-      stats
-    });
+
+    return res.json({ success: true, stats });
   } catch (error) {
     console.error("Stats error:", error);
-    res.status(500).json({
-      error: "Internal server error"
-    });
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
