@@ -87,15 +87,15 @@ export const VerificationFlow = ({
     },
     {
       id: "twitter-follow",
-      title: "Follow @nimrevxyz",
-      description: "Follow us on Twitter",
+      title: "Follow ODINARY on X",
+      description: "Follow our official X account",
       completed: false,
       required: true,
     },
     {
       id: "telegram-join",
       title: "Join Telegram",
-      description: "Join our Telegram group @nimrevxyz",
+      description: "Join our official Telegram group",
       completed: false,
       required: true,
     },
@@ -175,7 +175,7 @@ export const VerificationFlow = ({
     setError("");
 
     try {
-      const isFollowing = await verifyTwitterFollow("nimrevxyz");
+      const isFollowing = await verifyTwitterFollow("ODINARY");
 
       if (isFollowing) {
         const verificationData: VerificationRequest = {
@@ -204,7 +204,7 @@ export const VerificationFlow = ({
           setError("Failed to verify Twitter follow. Please try again.");
         }
       } else {
-        setError("Please follow @nimrevxyz on Twitter and try again.");
+        setError("Please follow ODINARY on X and try again.");
       }
     } catch (error) {
       setError("Error verifying Twitter follow. Please try again.");
@@ -245,7 +245,7 @@ export const VerificationFlow = ({
           setError("Failed to verify Telegram join. Please try again.");
         }
       } else {
-        setError("Please join the @nimrevxyz Telegram group and try again.");
+        setError("Please join the ODINARY Telegram group and try again.");
       }
     } catch (error) {
       setError("Error verifying Telegram join. Please try again.");
@@ -254,7 +254,7 @@ export const VerificationFlow = ({
   };
 
   const generateTweetText = () => {
-    const hashtags = ["#NimRev", "#VERM", "#GridSecurity"];
+    const hashtags = ["#ODINARY", "#NARY", "#Memeverse"];
     const text = `🚀 Excited to join the $VERM airdrop! Revolutionary blockchain security project by @nimrevxyz! ${hashtags.join(" ")} 
 
 Get your tokens: ${window.location.href}`;
@@ -277,7 +277,7 @@ Get your tokens: ${window.location.href}`;
     setError("");
 
     try {
-      const requiredHashtags = ["#NimRev", "#VERM", "#GridSecurity"];
+      const requiredHashtags = ["#ODINARY", "#NARY", "#Memeverse"];
       const isTweetValid = await verifyTweet(
         formData.tweetUrl,
         requiredHashtags,
@@ -420,7 +420,7 @@ Get your tokens: ${window.location.href}`;
             Verification Complete
           </CardTitle>
           <CardDescription className="text-cyber-light/60">
-            You're eligible for the $VERM airdrop!
+            You're eligible for the NARY airdrop!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -428,7 +428,7 @@ Get your tokens: ${window.location.href}`;
             <div className="text-4xl font-bold text-cyber-green mb-2">
               10,000
             </div>
-            <div className="text-cyber-light/60">$VERM Tokens Awaiting</div>
+            <div className="text-cyber-light/60">NARY Tokens Awaiting</div>
           </div>
         </CardContent>
       </Card>
@@ -487,7 +487,7 @@ Get your tokens: ${window.location.href}`;
                 )}
                 <div>
                   <h4 className="font-medium text-cyber-light">
-                    Follow @nimrevxyz on Twitter
+                    Follow ODINARY on X
                   </h4>
                   <p className="text-sm text-cyber-light/60">
                     Stay updated with project news
@@ -527,7 +527,7 @@ Get your tokens: ${window.location.href}`;
                 )}
                 <div>
                   <h4 className="font-medium text-cyber-light">
-                    Join @nimrevxyz Telegram
+                    Join ODINARY Telegram
                   </h4>
                   <p className="text-sm text-cyber-light/60">
                     Get exclusive updates and support
@@ -578,8 +578,7 @@ Get your tokens: ${window.location.href}`;
               <Alert className="border-cyber-neon/20 bg-cyber-darker/50">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription className="text-cyber-light/80">
-                  <strong>Requirements:</strong> Use hashtags #NimRev #VERM
-                  #GridSecurity and invite 1-3 friends
+                  <strong>Requirements:</strong> Use hashtags #ODINARY #NARY #Memeverse and invite 1-3 friends
                 </AlertDescription>
               </Alert>
 
