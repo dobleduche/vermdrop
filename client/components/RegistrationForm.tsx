@@ -79,7 +79,7 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
             Registration Complete
           </CardTitle>
           <CardDescription className="text-cyber-light/60">
-            Your wallet is registered for the $VERM airdrop
+            Your wallet is registered for the NARY airdrop
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -122,7 +122,7 @@ export const RegistrationForm = ({ onRegistrationComplete, existingRegistration 
       <CardHeader>
         <CardTitle className="text-cyber-neon">Register for Airdrop</CardTitle>
         <CardDescription className="text-cyber-light/60">
-          Complete your registration to be eligible for the $VERM airdrop
+          Complete your registration to be eligible for the NARY airdrop
         </CardDescription>
       </CardHeader>
       <CardContent>
