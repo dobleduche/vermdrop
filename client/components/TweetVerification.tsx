@@ -19,7 +19,7 @@ export const TweetVerification = ({ onVerified, isVerified, disabled }: TweetVer
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState('');
 
-  const requiredHashtags = ['#NimRev', '#VERM', '#GridSecurity'];
+  const requiredHashtags = ['#ODINARY', '#NARY', '#Memeverse'];
   
   const handleVerify = async () => {
     if (!tweetUrl) {
@@ -52,7 +52,7 @@ export const TweetVerification = ({ onVerified, isVerified, disabled }: TweetVer
   };
 
   const generateTweetText = () => {
-    const text = `🚀 Excited to join the $VERM airdrop! Revolutionary blockchain security project by @nimrevxyz! ${requiredHashtags.join(' ')} 
+    const text = `🚀 Joining the NARY airdrop! Meme-only ODINARY platform. ${requiredHashtags.join(' ')} 
 
 Get your tokens: ${window.location.href}`;
     return encodeURIComponent(text);
@@ -84,7 +84,7 @@ Get your tokens: ${window.location.href}`;
           Tweet About Project
         </CardTitle>
         <CardDescription className="text-cyber-light/60">
-          Tweet about $VERM and invite friends to be eligible
+          Tweet about NARY and invite friends to be eligible
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -95,9 +95,9 @@ Get your tokens: ${window.location.href}`;
             <strong>Requirements:</strong>
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>Use at least one hashtag: {requiredHashtags.join(', ')}</li>
-              <li>Follow @nimrevxyz on Twitter</li>
+              <li>Follow ODINARY on X</li>
               <li>Invite 1-3 friends to participate</li>
-              <li>Join @nimrevxyz Telegram group</li>
+              <li>Join ODINARY Telegram group</li>
             </ul>
           </AlertDescription>
         </Alert>
