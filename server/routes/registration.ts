@@ -78,6 +78,20 @@ export const registerUser: RequestHandler = async (req, res) => {
       throw insertError;
     }
 
+    // Ensure this user has a referral code
+    try {
+      const { getOrCreateReferral, trackReferralEvent } = await import("../lib/referrals");
+      await getOrCreateReferral(inserted.wallet_address);
+
+      // If referred_by_code provided, track referral
+      const referred_by_code = (req.body as any).referred_by_code as string | undefined;
+      if (referred_by_code) {
+        await trackReferralEvent(referred_by_code, inserted.wallet_address);
+      }
+    } catch (e) {
+      console.warn("Referral setup failed (non-fatal)", e);
+    }
+
     return res.status(201).json({ success: true, registration: inserted });
   } catch (error) {
     if (error instanceof z.ZodError) {
