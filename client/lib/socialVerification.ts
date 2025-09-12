@@ -4,13 +4,14 @@ export const verifyTwitterFollow = async (
   username: string,
 ): Promise<boolean> => {
   try {
-    // Open official X profile (disabled until configured)
+    // Open official X profile
+    window.open("https://twitter.com/odinarysol", "_blank");
 
     // User confirmation process (in production, would use Twitter API)
     return new Promise((resolve) => {
       setTimeout(() => {
         const userConfirms = window.confirm(
-          "Have you followed ODINARY on X?\n\nClick OK if you have followed, or Cancel to try again.",
+          "Have you followed @odinarysol on X?\n\nClick OK if you have followed, or Cancel to try again.",
         );
         resolve(userConfirms);
       }, 3000);
@@ -23,13 +24,14 @@ export const verifyTwitterFollow = async (
 
 export const verifyTelegramJoin = async (): Promise<boolean> => {
   try {
-    // Open Telegram group (disabled until configured)
+    // Open Telegram group
+    window.open("https://t.me/odinarychat", "_blank");
 
     // User confirmation process (in production, would use Telegram Bot API)
     return new Promise((resolve) => {
       setTimeout(() => {
         const userConfirms = window.confirm(
-          "Have you joined the ODINARY Telegram group?\n\nClick OK if you have joined, or Cancel to try again.",
+          "Have you joined the @odinarychat Telegram group?\n\nClick OK if you have joined, or Cancel to try again.",
         );
         resolve(userConfirms);
       }, 3000);
@@ -65,7 +67,7 @@ export const verifyTweet = async (
     // In production, this would:
     // 1. Use Twitter API to fetch tweet content
     // 2. Check if it contains required hashtags
-    // 3. Verify it mentions ODINARY (brand handle)
+    // 3. Verify it mentions @odinarysol
     // 4. Check if user invited friends (mentions or retweets)
 
     // Basic hashtag check in URL (in production, would fetch tweet content via API)
