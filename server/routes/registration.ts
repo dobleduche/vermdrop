@@ -69,15 +69,28 @@ export const registerUser: RequestHandler = async (req, res) => {
       .eq("wallet_address", data.wallet_address)
       .single();
     if (existingWallet) {
-      return res.status(409).json({ success: false, error: "Wallet address already registered", registration: existingWallet });
+      return res
+        .status(409)
+        .json({
+          success: false,
+          error: "Wallet address already registered",
+          registration: existingWallet,
+        });
     }
-    const { data: existingEmail } = await supabase
-      .from("vermairdrop_registrations")
-      .select("*")
-      .ilike("email", normalizedEmail)
-      .maybeSingle?.() ?? { data: null } as any;
+    const { data: existingEmail } =
+      (await supabase
+        .from("vermairdrop_registrations")
+        .select("*")
+        .ilike("email", normalizedEmail)
+        .maybeSingle?.()) ?? ({ data: null } as any);
     if (existingEmail) {
-      return res.status(409).json({ success: false, error: "Email already registered", registration: existingEmail });
+      return res
+        .status(409)
+        .json({
+          success: false,
+          error: "Email already registered",
+          registration: existingEmail,
+        });
     }
 
     // Try insert
@@ -118,14 +131,17 @@ export const registerUser: RequestHandler = async (req, res) => {
             registration: existingByWallet,
           });
         }
-        const { data: existingByEmail } = await supabase
-          .from("vermairdrop_registrations")
-          .select("*")
-          .ilike("email", normalizedEmail)
-          .maybeSingle?.() ?? { data: null } as any;
+        const { data: existingByEmail } =
+          (await supabase
+            .from("vermairdrop_registrations")
+            .select("*")
+            .ilike("email", normalizedEmail)
+            .maybeSingle?.()) ?? ({ data: null } as any);
         return res.status(409).json({
           success: false,
-          error: existingByEmail ? "Email already registered" : "Already registered",
+          error: existingByEmail
+            ? "Email already registered"
+            : "Already registered",
           registration: existingByEmail ?? undefined,
         });
       }

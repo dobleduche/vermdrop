@@ -66,7 +66,10 @@ export const AnimatedBackground = () => {
       <div className="absolute inset-0 cyber-grid opacity-20"></div>
 
       {/* Subtle Matrix Code Overlay */}
-      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
+      <div
+        className="absolute overflow-hidden pointer-events-none"
+        style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}
+      >
         {matrixCols.map((col) => (
           <div
             key={`mcol-${col}`}
@@ -108,7 +111,10 @@ export const AnimatedBackground = () => {
       </div>
 
       {/* Falling Objects */}
-      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
+      <div
+        className="absolute overflow-hidden pointer-events-none"
+        style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}
+      >
         {fallingObjects.map((obj) => (
           <div
             key={obj.id}
@@ -134,7 +140,10 @@ export const AnimatedBackground = () => {
       </div>
 
       {/* Floating Particles */}
-      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
+      <div
+        className="absolute overflow-hidden pointer-events-none"
+        style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}
+      >
         {Array.from({ length: 30 }).map((_, i) => (
           <div
             key={`particle-${i}`}
@@ -151,7 +160,10 @@ export const AnimatedBackground = () => {
       </div>
 
       {/* Energy Waves */}
-      <div className="absolute overflow-hidden pointer-events-none" style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}>
+      <div
+        className="absolute overflow-hidden pointer-events-none"
+        style={{ top: headerOffset, left: 0, right: 0, bottom: 0 }}
+      >
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={`wave-${i}`}
