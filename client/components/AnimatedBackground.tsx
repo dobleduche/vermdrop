@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface FallingObject {
   id: number;
@@ -12,10 +12,7 @@ export const AnimatedBackground = () => {
   const [fallingObjects, setFallingObjects] = useState<FallingObject[]>([]);
 
   useEffect(() => {
-    // Generate initial falling objects
     const objects: FallingObject[] = [];
-    
-    // Generate coins and gifts
     for (let i = 0; i < 15; i++) {
       objects.push({
         id: i,
@@ -25,10 +22,8 @@ export const AnimatedBackground = () => {
         duration: 8 + Math.random() * 4,
       });
     }
-    
     setFallingObjects(objects);
 
-    // Continuously add new objects
     const interval = setInterval(() => {
       setFallingObjects(prev => {
         const newObject: FallingObject = {
@@ -38,21 +33,46 @@ export const AnimatedBackground = () => {
           delay: 0,
           duration: 8 + Math.random() * 4,
         };
-        
-        // Keep only recent objects to prevent memory leak
         const filtered = prev.filter(obj => Date.now() - obj.id < 15000);
         return [...filtered, newObject];
       });
     }, 2000);
-
     return () => clearInterval(interval);
   }, []);
+
+  const matrixCols = useMemo(() => Array.from({ length: 14 }).map((_, i) => i), []);
+  const matrixChars = useMemo(() => Array.from({ length: 28 }).map(() => (Math.random() > 0.5 ? '1' : '0')), []);
 
   return (
     <>
       {/* Cybergrid Background */}
       <div className="absolute inset-0 cyber-grid opacity-20"></div>
-      
+
+      {/* Subtle Matrix Code Overlay */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {matrixCols.map((col) => (
+          <div
+            key={`mcol-${col}`}
+            className="matrix-stream"
+            style={{
+              left: `${(col + 1) * (100 / (matrixCols.length + 1))}%`,
+            }}
+          >
+            {matrixChars.map((ch, idx) => (
+              <span
+                key={`mch-${col}-${idx}`}
+                style={{
+                  animationDuration: `${8 + (idx % 6)}s`,
+                  animationDelay: `${(idx % 10) * 0.4 + Math.random() * 0.6}s`,
+                }}
+              >
+                {ch}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+
       {/* Animated Grid Lines */}
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 10 }).map((_, i) => (
