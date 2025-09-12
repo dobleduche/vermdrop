@@ -3,7 +3,7 @@ import { createServer } from "./index";
 import express from "express";
 
 const api = createServer();
-const app = (express as any)();
+const app = express();
 const port = process.env.PORT || 3000;
 
 // In production, serve the built SPA files
@@ -14,7 +14,7 @@ const distPath = path.join(__dirname, "../spa");
 app.use("/api", api);
 
 // Serve static files
-app.use((express as any).static(distPath));
+app.use(express.static(distPath));
 
 // Handle React Router - serve index.html for all non-API routes
 app.get("*", (req, res) => {
