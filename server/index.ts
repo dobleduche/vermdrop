@@ -18,6 +18,7 @@ import {
   notFoundHandler,
   asyncHandler,
 } from "./middleware/errorHandler";
+import { getReferralInfo, trackReferral } from "./routes/referrals";
 
 export function createServer() {
   const app = express();
