@@ -33,8 +33,8 @@ export function createServer() {
   app.use(
     cors({
       origin:
-        process.env.NODE_ENV === "production"
-          ? ["https://nimrev.xyz", "https://www.nimrev.xyz"]
+        process.env.ALLOWED_ORIGINS
+          ? (process.env.ALLOWED_ORIGINS.split(",").map((s) => s.trim()))
           : true,
       credentials: true,
     }),
