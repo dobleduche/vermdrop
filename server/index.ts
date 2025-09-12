@@ -23,6 +23,9 @@ import { getReferralInfo, trackReferral } from "./routes/referrals";
 export function createServer() {
   const app = express();
 
+  // Disable fingerprinting header
+  app.disable("x-powered-by");
+
   // Trust proxy for rate limiting
   app.set("trust proxy", 1);
 
@@ -46,6 +49,12 @@ export function createServer() {
     res.setHeader("X-Frame-Options", "DENY");
     res.setHeader("X-XSS-Protection", "1; mode=block");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    res.setHeader("X-DNS-Prefetch-Control", "off");
+    res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    if (process.env.NODE_ENV === "production") {
+      res.setHeader("Strict-Transport-Security", "max-age=15552000; includeSubDomains");
+    }
     next();
   });
 
