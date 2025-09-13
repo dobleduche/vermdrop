@@ -24,7 +24,10 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
-
+define: {
+  'process.env.SUPABASE_URL': JSON.stringify(env.SUPABASE_URL || env.VITE_SUPABASE_URL || ''),
+    'process.env.SUPABASE_ANON_KEY': JSON.stringify(env.SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || ''),
+    },
 function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
